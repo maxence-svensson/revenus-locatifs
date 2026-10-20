@@ -5,7 +5,14 @@ const store = useDossierStore()
 useSeoMeta({ title: 'Résultat' })
 
 const p = computed(() => store.projection)
-const anneeChoisie = ref<number | null>(null)
+// Année détaillée : la première par défaut, ramenée dans l'horizon s'il change.
+const anneeChoisie = ref<number>(p.value.annees[0]!.annee)
+watch(
+  () => p.value.annees.map((a) => a.annee),
+  (annees) => {
+    if (!annees.includes(anneeChoisie.value)) anneeChoisie.value = annees[0]!
+  },
+)
 const ligne = computed(
   () => p.value.annees.find((a) => a.annee === anneeChoisie.value) ?? p.value.annees[0]!,
 )
@@ -81,7 +88,7 @@ const hypotheses = computed(() => {
       </section>
     </div>
 
-    <section>
+    <section id="detail-annee" class="scroll-mt-28">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h2 class="headline text-2xl">Le détail d’une année</h2>
         <label class="flex items-center gap-2 text-sm">
@@ -94,7 +101,7 @@ const hypotheses = computed(() => {
       <DetailAnnee :ligne="ligne" />
     </section>
 
-    <section class="glass rounded-card p-5 sm:p-6">
+    <section id="cases" class="glass scroll-mt-28 rounded-card p-5 sm:p-6">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h2 class="headline text-2xl">Les cases à reporter pour {{ ligne.annee }}</h2>
         <ChoixSegmente v-model="regimeCases" label="" :options="optionsRegime" />
@@ -107,7 +114,11 @@ const hypotheses = computed(() => {
       </p>
     </section>
 
-    <section v-if="p.plan.length" class="glass rounded-card p-5 sm:p-6">
+    <section
+      v-if="p.plan.length"
+      id="amortissements"
+      class="glass scroll-mt-28 rounded-card p-5 sm:p-6"
+    >
       <h2 class="headline mb-4 text-2xl">Plan d’amortissement</h2>
       <PlanAmortissementTable :plan="p.plan" />
     </section>

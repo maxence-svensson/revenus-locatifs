@@ -18,7 +18,8 @@
     "format:check": "prettier --check .",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "captures": "node scripts/captures.mjs"
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.2",

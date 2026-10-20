@@ -6,6 +6,8 @@ meublée, année par année sur dix ans, et donne les cases à reporter sur la d
 **Démo :** https://revenus-locatifs.vercel.app, ou directement
 [l’exemple fictif en mode démonstration](https://revenus-locatifs.vercel.app/resultat?exemple).
 
+![Le résultat : la balance entre micro-foncier et réel, et l’impôt année par année](docs/captures/resultat.jpg)
+
 > Revenus locatifs est un outil indépendant, sans lien avec l’administration fiscale : ses
 > résultats sont indicatifs et ne remplacent pas un conseil fiscal.
 
@@ -28,6 +30,20 @@ meublée, année par année sur dix ans, et donne les cases à reporter sur la d
 - **Un mode démonstration** avec un exemple fictif clairement signalé.
 - **Vos données restent dans votre navigateur** : pas de compte, pas de serveur, une sauvegarde
   locale que vous pouvez effacer.
+
+![Le détail d’une année dans chaque régime, ligne par ligne](docs/captures/detail-annee.jpg)
+
+![Les cases à reporter sur la 2044 et la 2042](docs/captures/cases.jpg)
+
+![Le plan d’amortissement du même bien en meublé](docs/captures/amortissements.jpg)
+
+![La saisie du bien, avec le verdict qui se met à jour à chaque champ](docs/captures/simulateur.jpg)
+
+![Le mode sombre, qui suit le réglage du système](docs/captures/sombre.jpg)
+
+<p align="center">
+  <img src="docs/captures/mobile.jpg" alt="Le résultat sur téléphone, avec la barre d’onglets" width="320">
+</p>
 
 ## Principes
 
@@ -58,14 +74,15 @@ npm install
 npm run dev
 ```
 
-| Commande            | Rôle                     |
-| ------------------- | ------------------------ |
-| `npm run dev`       | serveur de développement |
-| `npm test`          | tests unitaires (Vitest) |
-| `npm run lint`      | ESLint                   |
-| `npm run typecheck` | vérification des types   |
-| `npm run format`    | mise en forme (Prettier) |
-| `npm run build`     | build de production      |
+| Commande            | Rôle                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| `npm run dev`       | serveur de développement                                                           |
+| `npm test`          | tests unitaires (Vitest)                                                           |
+| `npm run lint`      | ESLint                                                                             |
+| `npm run typecheck` | vérification des types                                                             |
+| `npm run format`    | mise en forme (Prettier)                                                           |
+| `npm run build`     | build de production                                                                |
+| `npm run captures`  | captures d’écran du README (Chrome ou Edge installé, build lancé sur le port 3002) |
 
 ## Organisation du code
 
