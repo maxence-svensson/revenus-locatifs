@@ -20,15 +20,13 @@ const naturesLibelles: Record<NatureTravaux, string> = {
 </script>
 
 <template>
-  <div class="space-y-6">
-    <section class="carte space-y-4">
-      <h2 class="titre-section">Le bien</h2>
+  <div class="space-y-5">
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
+      <h2 class="headline text-xl">Le bien</h2>
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="sm:col-span-2">
-          <label for="nom" class="text-texte mb-1 block text-sm font-medium"
-            >Nom, pour vous repérer</label
-          >
-          <input id="nom" v-model="b.nom" type="text" class="champ" maxlength="60" />
+          <label for="nom" class="block text-sm font-semibold">Nom, pour vous repérer</label>
+          <input id="nom" v-model="b.nom" type="text" class="input mt-2" maxlength="60" />
         </div>
         <div class="sm:col-span-2">
           <ChoixSegmente
@@ -79,8 +77,8 @@ const naturesLibelles: Record<NatureTravaux, string> = {
       </div>
     </section>
 
-    <section class="carte space-y-4">
-      <h2 class="titre-section">Loyers</h2>
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
+      <h2 class="headline text-xl">Loyers</h2>
       <div class="grid gap-4 sm:grid-cols-2">
         <ChampNombre
           v-model="b.loyerMensuelHorsCharges"
@@ -108,8 +106,8 @@ const naturesLibelles: Record<NatureTravaux, string> = {
       </div>
     </section>
 
-    <section class="carte space-y-4">
-      <h2 class="titre-section">Charges annuelles</h2>
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
+      <h2 class="headline text-xl">Charges annuelles</h2>
       <div class="grid gap-4 sm:grid-cols-2">
         <ChampNombre
           v-model="b.taxeFonciere"
@@ -147,14 +145,14 @@ const naturesLibelles: Record<NatureTravaux, string> = {
       </div>
     </section>
 
-    <section class="carte space-y-4">
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
       <div class="flex items-center justify-between">
-        <h2 class="titre-section">Travaux</h2>
-        <button type="button" class="bouton-discret" @click="store.ajouterTravaux()">
+        <h2 class="headline text-xl">Travaux</h2>
+        <button type="button" class="btn btn-ghost btn-sm" @click="store.ajouterTravaux()">
           <AppIcon nom="plus" /> Ajouter
         </button>
       </div>
-      <p v-if="b.travaux.length === 0" class="text-texte-doux text-sm">
+      <p v-if="b.travaux.length === 0" class="text-muted text-sm">
         Aucun travaux. En location nue, les travaux d’entretien et d’amélioration se déduisent
         l’année où vous les payez ; en meublé, l’amélioration s’amortit.
       </p>
@@ -162,13 +160,11 @@ const naturesLibelles: Record<NatureTravaux, string> = {
         <li
           v-for="t in b.travaux"
           :key="t.id"
-          class="border-bordure grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_7rem_8rem_auto] sm:items-end"
+          class="solid-card grid gap-3 rounded-control p-4 sm:grid-cols-[1fr_7rem_8rem_auto] sm:items-end"
         >
           <div>
-            <label :for="`lib-${t.id}`" class="text-texte mb-1 block text-xs font-medium"
-              >Nature</label
-            >
-            <select :id="`lib-${t.id}`" v-model="t.nature" class="champ">
+            <label :for="`lib-${t.id}`" class="block text-sm font-semibold">Nature</label>
+            <select :id="`lib-${t.id}`" v-model="t.nature" class="input mt-2">
               <option v-for="n in NATURES_TRAVAUX" :key="n" :value="n">
                 {{ naturesLibelles[n] }}
               </option>
@@ -176,7 +172,7 @@ const naturesLibelles: Record<NatureTravaux, string> = {
             <input
               v-model="t.libelle"
               type="text"
-              class="champ mt-2"
+              class="input mt-2"
               placeholder="Libellé (facultatif)"
               maxlength="80"
             />
@@ -185,7 +181,7 @@ const naturesLibelles: Record<NatureTravaux, string> = {
           <ChampNombre v-model="t.montant" label="Montant" />
           <button
             type="button"
-            class="bouton-discret text-negatif self-end"
+            class="btn btn-ghost btn-sm btn-danger self-end"
             :aria-label="`Supprimer ces travaux`"
             @click="store.supprimerTravaux(t.id)"
           >
@@ -195,14 +191,14 @@ const naturesLibelles: Record<NatureTravaux, string> = {
       </ul>
       <p
         v-if="b.travaux.some((t) => t.nature === 'construction') && !meuble"
-        class="text-attention text-xs"
+        class="text-warning text-xs"
       >
         Les travaux de construction ou d’agrandissement ne se déduisent pas des revenus fonciers ;
         ils sont ignorés dans le calcul en location nue.
       </p>
     </section>
 
-    <section class="carte space-y-4">
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
       <Interrupteur
         v-model="b.emprunt.actif"
         label="Un emprunt finance le bien"
@@ -249,8 +245,8 @@ const naturesLibelles: Record<NatureTravaux, string> = {
       </div>
     </section>
 
-    <section class="carte space-y-4">
-      <h2 class="titre-section">Le foyer</h2>
+    <section class="glass space-y-5 rounded-card p-5 sm:p-6">
+      <h2 class="headline text-xl">Le foyer</h2>
       <div class="grid gap-4 sm:grid-cols-2">
         <ChampNombre
           v-model="f.autresRecettesMemeCategorie"

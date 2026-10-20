@@ -27,7 +27,7 @@ defineProps<{ plan: LigneAmortissement[] }>()
         </tr>
       </tbody>
     </table>
-    <p class="text-texte-doux mt-2 text-xs">
+    <p class="text-muted mt-2 text-xs">
       Durées d’usage, en linéaire et en années pleines. La loi n’en fixe pas : votre
       expert-comptable peut en retenir d’autres.
     </p>

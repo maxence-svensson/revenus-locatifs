@@ -1,15 +1,21 @@
 <script setup lang="ts">
+/** Rappel permanent du mode démonstration : les données affichées sont fictives. */
 const store = useDossierStore()
 </script>
 
 <template>
   <div
     v-if="store.demo"
-    class="bg-attention-doux text-attention border-bordure border-b px-4 py-2 text-center text-sm font-medium"
+    class="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-card bg-warning-tint px-5 py-4 text-sm"
+    role="status"
   >
-    Exemple fictif affiché : un T2 imaginaire, pour essayer. Modifiez un champ ou
-    <button type="button" class="underline underline-offset-2" @click="store.reinitialiser()">
-      repartez de zéro</button
-    >.
+    <p>
+      <span class="font-semibold text-warning">Mode démonstration.</span>
+      Ces données sont fictives : un T2 imaginaire, pour essayer. Modifiez un champ et il devient
+      votre dossier.
+    </p>
+    <button type="button" class="btn btn-secondary btn-sm" @click="store.reinitialiser()">
+      Quitter la démonstration
+    </button>
   </div>
 </template>

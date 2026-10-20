@@ -1,38 +1,38 @@
-export type Theme = 'systeme' | 'clair' | 'sombre'
+/** Thème de l'interface : celui du système, ou clair ou sombre imposé par l'utilisateur. */
+export type Theme = 'system' | 'light' | 'dark'
 
 const CLE = 'revenus-locatifs:theme'
+const META_COLORS = { light: '#f5f5f7', dark: '#000000' }
 
 export function useTheme() {
-  const theme = useState<Theme>('theme', () => 'systeme')
+  const theme = useState<Theme>('theme', () => 'system')
 
-  function appliquer() {
-    if (typeof document === 'undefined') return
-    const sombre =
-      theme.value === 'sombre' ||
-      (theme.value === 'systeme' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    document.documentElement.classList.toggle('dark', sombre)
+  /** À appeler une fois côté navigateur : relit le choix enregistré. */
+  function load() {
+    try {
+      const saved = localStorage.getItem(CLE)
+      theme.value = saved === 'light' || saved === 'dark' ? saved : 'system'
+    } catch {
+      theme.value = 'system'
+    }
   }
 
-  function choisir(t: Theme) {
-    theme.value = t
+  function apply(value: Theme) {
+    theme.value = value
     try {
-      localStorage.setItem(CLE, t)
+      if (value === 'system') localStorage.removeItem(CLE)
+      else localStorage.setItem(CLE, value)
     } catch {
       // Sans stockage, le choix vaut pour la session.
     }
-    appliquer()
-  }
-
-  function initialiser() {
-    try {
-      const sauve = localStorage.getItem(CLE) as Theme | null
-      if (sauve === 'clair' || sauve === 'sombre' || sauve === 'systeme') theme.value = sauve
-    } catch {
-      // Rien.
+    const root = document.documentElement
+    if (value === 'system') delete root.dataset.theme
+    else root.dataset.theme = value
+    for (const meta of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+      const scheme = meta.media.includes('dark') ? 'dark' : 'light'
+      meta.content = META_COLORS[value === 'system' ? scheme : value]
     }
-    appliquer()
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', appliquer)
   }
 
-  return { theme, choisir, initialiser }
+  return { theme, load, apply }
 }

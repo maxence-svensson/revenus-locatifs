@@ -7,7 +7,7 @@ defineProps<{ messages: string[] }>()
     <li
       v-for="m in messages"
       :key="m"
-      class="bg-attention-doux text-attention flex gap-2 rounded-xl px-3 py-2 text-sm"
+      class="bg-warning-tint text-warning flex gap-2 rounded-xl px-3 py-2 text-sm"
     >
       <AppIcon nom="alerte" class="mt-0.5" />
       <span>{{ m }}</span>

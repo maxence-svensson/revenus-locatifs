@@ -49,12 +49,12 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
   <figure>
     <figcaption class="mb-2 flex flex-wrap items-center gap-4 text-xs">
       <span class="flex items-center gap-1.5"
-        ><span class="bg-micro inline-block size-3 rounded-sm" />{{ nomMicro }}</span
+        ><span class="bg-series-1 inline-block size-3 rounded-sm" />{{ nomMicro }}</span
       >
       <span class="flex items-center gap-1.5"
-        ><span class="bg-reel inline-block size-3 rounded-sm" />{{ nomReel }}</span
+        ><span class="bg-series-2 inline-block size-3 rounded-sm" />{{ nomReel }}</span
       >
-      <span class="text-texte-doux"
+      <span class="text-muted"
         >Impôt et prélèvements par année, nets des économies. Une barre sous zéro est une économie
         d’impôt.</span
       >
@@ -71,14 +71,14 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
           :x2="largeur - marge.droite"
           :y1="y(g)"
           :y2="y(g)"
-          class="stroke-bordure"
+          class="stroke-separator"
           stroke-width="1"
         />
         <text
           :x="marge.gauche - 6"
           :y="y(g) + 4"
           text-anchor="end"
-          class="fill-texte-doux text-[11px] tabular-nums"
+          class="fill-muted text-[11px] tabular-nums"
         >
           {{ nombreFr(g) }}
         </text>
@@ -88,7 +88,7 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
         :x2="largeur - marge.droite"
         :y1="y0"
         :y2="y0"
-        class="stroke-texte-doux"
+        class="stroke-muted"
         stroke-width="1"
       />
       <g v-for="(d, i) in donnees" :key="d.annee">
@@ -97,7 +97,7 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
           :y="Math.min(y(d.micro), y0)"
           :width="barre"
           :height="Math.max(1, Math.abs(y(d.micro) - y0))"
-          class="fill-micro"
+          class="fill-series-1"
           rx="3"
         >
           <title>{{ d.annee }} · {{ nomMicro }} : {{ euros(d.micro) }}</title>
@@ -107,7 +107,7 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
           :y="Math.min(y(d.reel), y0)"
           :width="barre"
           :height="Math.max(1, Math.abs(y(d.reel) - y0))"
-          class="fill-reel"
+          class="fill-series-2"
           rx="3"
         >
           <title>{{ d.annee }} · {{ nomReel }} : {{ euros(d.reel) }}</title>
@@ -117,7 +117,7 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
           :x="marge.gauche + i * groupe + groupe / 2"
           :y="hauteur - 8"
           text-anchor="middle"
-          class="fill-texte-doux text-[11px] tabular-nums"
+          class="fill-muted text-[11px] tabular-nums"
         >
           {{ d.annee }}
         </text>

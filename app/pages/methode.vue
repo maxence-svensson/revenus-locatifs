@@ -1,66 +1,64 @@
 <script setup lang="ts">
-useSeoMeta({ title: 'Méthode et sources · Revenus locatifs' })
+useSeoMeta({ title: 'Méthode et sources' })
 </script>
 
 <template>
-  <div class="prose-sm max-w-3xl space-y-8">
+  <div class="max-w-3xl space-y-6">
     <PageHeader
       titre="Méthode et sources"
       sous-titre="Ce que l’outil calcule, d’où viennent les règles, et ce qu’il laisse de côté."
     />
 
-    <section class="carte space-y-3">
-      <h2 class="text-lg font-semibold">Location nue : revenus fonciers</h2>
-      <p class="text-sm">
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Location nue : revenus fonciers</h2>
+      <p>
         <strong>Micro-foncier.</strong> Si les loyers bruts du foyer ne dépassent pas 15 000 € par
         an, un abattement de 30 % tient lieu de toutes les charges. Aucun déficit n’est possible.
-        <span class="text-texte-doux">CGI art. 32.</span>
+        <span class="text-muted">CGI art. 32.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Réel.</strong> On déduit les charges effectives : frais de gestion et forfait de 20
         € par local, assurances, travaux d’entretien, de réparation et d’amélioration (pas de
         construction ni d’agrandissement), taxe foncière, charges de copropriété non récupérables,
-        intérêts, assurance et frais d’emprunt. <span class="text-texte-doux">CGI art. 31.</span>
+        intérêts, assurance et frais d’emprunt. <span class="text-muted">CGI art. 31.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Déficit foncier.</strong> Les intérêts s’imputent d’abord sur les loyers ; le
         déficit qu’ils laissent ne se reporte que sur les revenus fonciers des dix années suivantes.
         Le déficit dû aux autres charges s’impute sur le revenu global jusqu’à 10 700 € par an (21
         400 € pour des travaux de rénovation énergétique payés entre 2023 et 2025), l’excédent se
         reporte dix ans. Cette imputation oblige à louer jusqu’au 31 décembre de la troisième année
-        suivante. <span class="text-texte-doux">CGI art. 156-I-3° ; BOI-RFPI-BASE-30-20.</span>
+        suivante. <span class="text-muted">CGI art. 156-I-3° ; BOI-RFPI-BASE-30-20.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Option.</strong> Le micro s’applique de plein droit ; l’option pour le réel engage
         trois ans, puis se reconduit chaque année.
       </p>
     </section>
 
-    <section class="carte space-y-3">
-      <h2 class="text-lg font-semibold">Location meublée : BIC non professionnels</h2>
-      <p class="text-sm">
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Location meublée : BIC non professionnels</h2>
+      <p>
         <strong>Micro-BIC.</strong> Jusqu’à 77 700 € de recettes pour une location meublée de longue
         durée, abattement de 50 % avec un minimum de 305 €.
-        <span class="text-texte-doux">CGI art. 50-0.</span>
+        <span class="text-muted">CGI art. 50-0.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Réel simplifié.</strong> Charges effectives (taxe foncière, assurances, gestion,
         copropriété, comptable, CFE, entretien, emprunt) et amortissement du bien hors terrain, du
         mobilier et des travaux d’amélioration. L’amortissement déduit ne peut pas créer ni
         augmenter un déficit : l’excédent se reporte sans limite de durée. Le déficit dû aux autres
         charges se reporte dix ans sur les seuls BIC non professionnels, jamais sur le salaire.
-        <span class="text-texte-doux"
-          >CGI art. 39 C et 156-I-1° ter ; BOI-BIC-AMT-20-40-10-10.</span
-        >
+        <span class="text-muted">CGI art. 39 C et 156-I-1° ter ; BOI-BIC-AMT-20-40-10-10.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Amortissement par composants.</strong> La loi ne fixe pas de durées. L’outil retient
         des usages : gros œuvre 50 ans (55 % du bâti), façade et toiture 25 ans (15 %),
         installations techniques 20 ans (15 %), agencements 15 ans (15 %), mobilier 7 ans, travaux
         d’amélioration 10 ans. Le terrain, 15 % par défaut, ne s’amortit pas. Les frais
         d’acquisition suivent le bien.
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Revente.</strong> Pour les cessions depuis le 15 février 2025, les amortissements
         déduits se réintègrent dans le prix d’acquisition pour la plus-value (loi de finances pour
         2025, art. 84). L’outil ne chiffre pas la revente et le rappelle quand il recommande le
@@ -68,28 +66,28 @@ useSeoMeta({ title: 'Méthode et sources · Revenus locatifs' })
       </p>
     </section>
 
-    <section class="carte space-y-3">
-      <h2 class="text-lg font-semibold">Ce qui s’ajoute dans les deux cas</h2>
-      <p class="text-sm">
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Ce qui s’ajoute dans les deux cas</h2>
+      <p>
         <strong>Impôt sur le revenu.</strong> Le revenu net est imposé à votre tranche marginale,
         supposée constante. L’outil ne recalcule pas tout le barème : un revenu locatif qui ferait
         changer de tranche est traité à la tranche indiquée.
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Prélèvements sociaux.</strong> 17,2 % sur le revenu net positif. 6,8 points de CSG
         sont déductibles du revenu global de l’année suivante : l’outil compte cette économie
         l’année d’après, à votre tranche.
-        <span class="text-texte-doux">CGI art. 154 quinquies.</span>
+        <span class="text-muted">CGI art. 154 quinquies.</span>
       </p>
-      <p class="text-sm">
+      <p>
         <strong>Arrondis.</strong> Les bases sont arrondies à l’euro, comme sur les formulaires.
         Tous les calculs se font en décimal exact.
       </p>
     </section>
 
-    <section class="carte space-y-3">
-      <h2 class="text-lg font-semibold">Limites connues</h2>
-      <ul class="list-inside list-disc space-y-1 text-sm">
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Limites connues</h2>
+      <ul class="list-inside list-disc space-y-1">
         <li>
           Un seul bien par dossier ; les plafonds du micro tiennent compte des autres recettes que
           vous indiquez, mais pas de leurs charges.
@@ -117,33 +115,33 @@ useSeoMeta({ title: 'Méthode et sources · Revenus locatifs' })
       </ul>
     </section>
 
-    <section class="carte space-y-2">
-      <h2 class="text-lg font-semibold">Sources</h2>
-      <ul class="text-sm">
+    <section class="solid-card space-y-2 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Sources</h2>
+      <ul class="space-y-1">
         <li>
           <a
-            class="text-accent underline-offset-2 hover:underline"
+            class="text-link underline-offset-2 hover:underline"
             href="https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069577/"
             >Code général des impôts</a
           >, articles 28 à 32, 39 C, 50-0, 154 quinquies, 156.
         </li>
         <li>
           <a
-            class="text-accent underline-offset-2 hover:underline"
+            class="text-link underline-offset-2 hover:underline"
             href="https://bofip.impots.gouv.fr/bofip/4789-PGP.html"
             >BOI-RFPI-BASE-30-20</a
           >, imputation des déficits fonciers.
         </li>
         <li>
           <a
-            class="text-accent underline-offset-2 hover:underline"
+            class="text-link underline-offset-2 hover:underline"
             href="https://bofip.impots.gouv.fr/bofip/4826-PGP.html"
             >BOI-BIC-AMT-20-40-10-10</a
           >, amortissements des loueurs en meublé non professionnels.
         </li>
         <li>
           <a
-            class="text-accent underline-offset-2 hover:underline"
+            class="text-link underline-offset-2 hover:underline"
             href="https://www.impots.gouv.fr/particulier/questions/je-mets-en-location-un-logement-vide-quelles-sont-mes-obligations"
             >impots.gouv.fr</a
           >, brochure pratique des revenus fonciers et des locations meublées.
@@ -151,7 +149,7 @@ useSeoMeta({ title: 'Méthode et sources · Revenus locatifs' })
         <li>
           Le code source et les tests sont publics :
           <a
-            class="text-accent underline-offset-2 hover:underline"
+            class="text-link underline-offset-2 hover:underline"
             href="https://github.com/maxence-svensson/revenus-locatifs"
             >github.com/maxence-svensson/revenus-locatifs</a
           >.

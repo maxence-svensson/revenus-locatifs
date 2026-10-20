@@ -17,7 +17,7 @@ const visibles = computed(() => props.cases.filter((c) => !c.facultative || !c.m
     <tbody>
       <tr v-for="c in visibles" :key="c.formulaire + c.numero">
         <td class="whitespace-nowrap">{{ c.formulaire }}</td>
-        <td class="font-mono font-semibold">{{ c.numero }}</td>
+        <td class="font-semibold">{{ c.numero }}</td>
         <td>{{ c.libelle }}</td>
         <td class="num font-medium">{{ euros(c.montant) }}</td>
       </tr>

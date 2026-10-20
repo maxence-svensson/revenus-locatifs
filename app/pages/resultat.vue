@@ -2,7 +2,7 @@
 import { casesPour } from '#shared/tax/cases'
 
 const store = useDossierStore()
-useSeoMeta({ title: 'Résultat · Revenus locatifs' })
+useSeoMeta({ title: 'Résultat' })
 
 const p = computed(() => store.projection)
 const anneeChoisie = ref<number | null>(null)
@@ -42,11 +42,11 @@ const hypotheses = computed(() => {
 </script>
 
 <template>
-  <div v-if="!store.renseigne" class="carte text-center">
-    <p class="text-texte-doux">Aucun bien renseigné pour l’instant.</p>
+  <div v-if="!store.renseigne" class="glass rounded-card p-8 text-center">
+    <p class="text-muted">Aucun bien renseigné pour l’instant.</p>
     <div class="mt-4 flex justify-center gap-3">
-      <NuxtLink to="/simulateur" class="bouton-principal">Saisir mon bien</NuxtLink>
-      <button type="button" class="bouton-secondaire" @click="store.chargerExemple()">
+      <NuxtLink to="/simulateur" class="btn btn-primary">Saisir mon bien</NuxtLink>
+      <button type="button" class="btn btn-secondary" @click="store.chargerExemple()">
         Voir un exemple
       </button>
     </div>
@@ -57,23 +57,23 @@ const hypotheses = computed(() => {
       :sous-titre="`${store.dossier.bien.typeLocation === 'nue' ? 'Location nue' : 'Location meublée non professionnelle'}, de ${p.annees[0]!.annee} à ${p.annees.at(-1)!.annee}.`"
     >
       <template #actions>
-        <NuxtLink to="/simulateur" class="bouton-secondaire">Modifier</NuxtLink>
+        <NuxtLink to="/simulateur" class="btn btn-secondary">Modifier</NuxtLink>
       </template>
     </PageHeader>
 
     <div class="grid gap-6 lg:grid-cols-[22rem_1fr] lg:items-start">
-      <div class="space-y-4">
+      <div class="min-w-0 space-y-4">
         <ResultatVerdict :projection="p" />
         <Avertissements :messages="p.avertissements" />
-        <div class="carte">
-          <h2 class="titre-section mb-2">Hypothèses</h2>
-          <ul class="text-texte-doux space-y-1 text-sm">
+        <div class="glass rounded-card p-5 sm:p-6">
+          <h2 class="font-semibold tracking-tight">Hypothèses</h2>
+          <ul class="text-muted space-y-1 text-sm">
             <li v-for="h in hypotheses" :key="h">{{ h }}</li>
           </ul>
         </div>
       </div>
-      <section class="carte">
-        <h2 class="titre-section mb-3">Année par année</h2>
+      <section class="glass min-w-0 rounded-card p-5 sm:p-6">
+        <h2 class="headline mb-4 text-2xl">Année par année</h2>
         <ProjectionChart :projection="p" />
         <div class="mt-4">
           <ProjectionTable :projection="p" />
@@ -83,10 +83,10 @@ const hypotheses = computed(() => {
 
     <section>
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-lg font-semibold">Le détail d’une année</h2>
+        <h2 class="headline text-2xl">Le détail d’une année</h2>
         <label class="flex items-center gap-2 text-sm">
-          <span class="text-texte-doux">Année</span>
-          <select v-model="anneeChoisie" class="champ w-auto">
+          <span class="text-muted">Année</span>
+          <select v-model="anneeChoisie" class="input numeric w-auto">
             <option v-for="a in p.annees" :key="a.annee" :value="a.annee">{{ a.annee }}</option>
           </select>
         </label>
@@ -94,21 +94,21 @@ const hypotheses = computed(() => {
       <DetailAnnee :ligne="ligne" />
     </section>
 
-    <section class="carte">
+    <section class="glass rounded-card p-5 sm:p-6">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-lg font-semibold">Les cases à reporter pour {{ ligne.annee }}</h2>
+        <h2 class="headline text-2xl">Les cases à reporter pour {{ ligne.annee }}</h2>
         <ChoixSegmente v-model="regimeCases" label="" :options="optionsRegime" />
       </div>
       <CasesTable :cases="cases" />
-      <p class="text-texte-doux mt-3 text-xs">
+      <p class="text-muted mt-3 text-xs">
         Numéros des formulaires des revenus 2025 : vérifiez-les sur la notice de l’année, ils
         changent parfois de place. Au réel en meublé, la liasse 2031 et ses annexes 2033 se
         télétransmettent à part, en général par un expert-comptable.
       </p>
     </section>
 
-    <section v-if="p.plan.length" class="carte">
-      <h2 class="mb-3 text-lg font-semibold">Plan d’amortissement</h2>
+    <section v-if="p.plan.length" class="glass rounded-card p-5 sm:p-6">
+      <h2 class="headline mb-4 text-2xl">Plan d’amortissement</h2>
       <PlanAmortissementTable :plan="p.plan" />
     </section>
   </div>

@@ -186,9 +186,9 @@ const nomReel = computed(() =>
 
 <template>
   <div class="grid gap-4 lg:grid-cols-2">
-    <section class="carte">
-      <h3 class="text-micro mb-3 text-sm font-semibold uppercase">{{ nomMicro }}</h3>
-      <p v-if="!ligne.micro.resultat.applicable" class="text-attention mb-3 text-sm">
+    <section class="solid-card rounded-card p-5 sm:p-6">
+      <h3 class="text-series-1 mb-3 text-sm font-semibold uppercase">{{ nomMicro }}</h3>
+      <p v-if="!ligne.micro.resultat.applicable" class="text-warning mb-3 text-sm">
         {{ ligne.micro.resultat.motifInapplicable }}
       </p>
       <dl>
@@ -197,8 +197,8 @@ const nomReel = computed(() =>
           :key="i"
           class="flex justify-between gap-3 py-1 text-sm"
           :class="{
-            'border-bordure mt-1 border-t pt-2 font-semibold': l.total,
-            'text-texte-doux': l.doux,
+            'border-separator mt-1 border-t pt-2 font-semibold': l.total,
+            'text-muted': l.doux,
           }"
         >
           <dt>{{ l.libelle }}</dt>
@@ -208,16 +208,16 @@ const nomReel = computed(() =>
         </div>
       </dl>
     </section>
-    <section class="carte">
-      <h3 class="text-reel mb-3 text-sm font-semibold uppercase">{{ nomReel }}</h3>
+    <section class="solid-card rounded-card p-5 sm:p-6">
+      <h3 class="text-series-2 mb-3 text-sm font-semibold uppercase">{{ nomReel }}</h3>
       <dl>
         <div
           v-for="(l, i) in reel"
           :key="i"
           class="flex justify-between gap-3 py-1 text-sm"
           :class="{
-            'border-bordure mt-1 border-t pt-2 font-semibold': l.total,
-            'text-texte-doux': l.doux,
+            'border-separator mt-1 border-t pt-2 font-semibold': l.total,
+            'text-muted': l.doux,
           }"
         >
           <dt>{{ l.libelle }}</dt>

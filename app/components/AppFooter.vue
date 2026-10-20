@@ -1,24 +1,26 @@
 <template>
-  <footer
-    class="text-texte-doux mx-auto w-full max-w-6xl px-4 pb-24 text-xs leading-relaxed sm:px-6 md:pb-8"
-  >
-    <p>
-      Revenus locatifs est un outil indépendant, sans lien avec l’administration fiscale : ses
-      résultats sont indicatifs et ne remplacent pas un conseil fiscal. Vos données restent dans
-      votre navigateur, aucun serveur ne les reçoit.
-    </p>
-    <p class="mt-2">
-      Du même auteur :
-      <a
-        href="https://crypto-plusvalue.vercel.app"
-        class="text-accent underline-offset-2 hover:underline"
-        >Crypto-plusvalue</a
-      >, le calcul des plus-values crypto pour le formulaire 2086.
-      <a
-        href="https://github.com/maxence-svensson/revenus-locatifs"
-        class="text-accent underline-offset-2 hover:underline"
-        >Code source</a
-      >.
-    </p>
+  <footer class="border-t border-separator">
+    <div
+      class="mx-auto max-w-[72rem] space-y-4 px-5 pt-12 pb-36 text-sm text-muted sm:px-8 lg:pb-12"
+    >
+      <p class="max-w-prose">
+        Revenus locatifs est un outil indépendant, sans lien avec l’administration fiscale. Ses
+        résultats sont indicatifs et ne remplacent pas un conseil fiscal : vérifiez-les avant de
+        déclarer. Vos données restent dans ce navigateur.
+      </p>
+      <p class="flex flex-wrap gap-x-6 gap-y-2">
+        <NuxtLink to="/methode" class="hover:text-label hover:underline"
+          >Méthode et sources</NuxtLink
+        >
+        <a
+          href="https://github.com/maxence-svensson/revenus-locatifs"
+          class="hover:text-label hover:underline"
+          >Code source</a
+        >
+        <a href="https://crypto-plusvalue.vercel.app" class="hover:text-label hover:underline"
+          >Du même auteur : Crypto-plusvalue</a
+        >
+      </p>
+    </div>
   </footer>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const store = useDossierStore()
 const router = useRouter()
-useSeoMeta({ title: 'Revenus locatifs : micro ou réel ?' })
+useSeoMeta({ title: 'Revenus locatifs : micro ou réel, la réponse chiffrée' })
 
 async function essayer() {
   store.chargerExemple()
@@ -10,52 +10,58 @@ async function essayer() {
 </script>
 
 <template>
-  <div class="space-y-10">
-    <section class="pt-6 sm:pt-12">
-      <p class="titre-section">Location nue ou meublée</p>
-      <h1 class="mt-2 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">
+  <div class="space-y-12 lg:space-y-16">
+    <section class="pt-4 sm:pt-10">
+      <p class="enter eyebrow" style="--delay: 0ms">Location nue ou meublée</p>
+      <h1 class="enter text-hero mt-3 max-w-4xl text-balance" style="--delay: 80ms">
         Micro ou réel ? La réponse chiffrée, année par année.
       </h1>
-      <p class="text-texte-doux mt-4 max-w-2xl text-base sm:text-lg">
+      <p
+        class="enter mt-6 max-w-prose text-lg text-pretty text-muted sm:text-xl"
+        style="--delay: 160ms"
+      >
         Saisissez votre bien, ses loyers, ses charges et son emprunt. Vous obtenez l’impôt dans
         chaque régime sur dix ans, le régime qui coûte le moins cher, et les cases à reporter sur la
         déclaration.
       </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <NuxtLink to="/simulateur" class="bouton-principal">{{
+      <div class="enter mt-8 flex flex-wrap gap-3" style="--delay: 240ms">
+        <NuxtLink to="/simulateur" class="btn btn-primary">{{
           store.touche ? 'Reprendre ma saisie' : 'Commencer'
         }}</NuxtLink>
-        <button type="button" class="bouton-secondaire" @click="essayer">Voir un exemple</button>
+        <button type="button" class="btn btn-secondary" @click="essayer">Voir un exemple</button>
       </div>
     </section>
 
     <section class="grid gap-4 md:grid-cols-3">
-      <div class="carte">
-        <h2 class="font-semibold">Vos données restent chez vous</h2>
-        <p class="text-texte-doux mt-1 text-sm">
+      <div class="glass rounded-card p-6">
+        <AppIcon nom="coche" class="text-link" />
+        <h2 class="mt-3 font-semibold tracking-tight">Vos données restent chez vous</h2>
+        <p class="mt-1 text-sm text-muted">
           Tout se calcule dans votre navigateur. Aucun compte, aucun envoi, aucun serveur qui reçoit
           vos montants.
         </p>
       </div>
-      <div class="carte">
-        <h2 class="font-semibold">Le calcul officiel, ligne par ligne</h2>
-        <p class="text-texte-doux mt-1 text-sm">
+      <div class="glass rounded-card p-6">
+        <AppIcon nom="livre" class="text-link" />
+        <h2 class="mt-3 font-semibold tracking-tight">Le calcul officiel, ligne par ligne</h2>
+        <p class="mt-1 text-sm text-muted">
           Déficit foncier et son plafond, amortissements plafonnés au résultat, CSG déductible :
           chaque règle cite sa source et a son test.
         </p>
       </div>
-      <div class="carte">
-        <h2 class="font-semibold">Dix ans, pas une année</h2>
-        <p class="text-texte-doux mt-1 text-sm">
+      <div class="glass rounded-card p-6">
+        <AppIcon nom="balance" class="text-link" />
+        <h2 class="mt-3 font-semibold tracking-tight">Dix ans, pas une année</h2>
+        <p class="mt-1 text-sm text-muted">
           Le réel gagne souvent l’année des travaux et perd ensuite. La projection montre quand la
           balance bascule.
         </p>
       </div>
     </section>
 
-    <section class="carte-pleine">
-      <h2 class="font-semibold">Ce que l’outil ne fait pas</h2>
-      <ul class="text-texte-doux mt-2 grid gap-1 text-sm sm:grid-cols-2">
+    <section class="solid-card rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Ce que l’outil ne fait pas</h2>
+      <ul class="mt-4 grid gap-2 text-muted sm:grid-cols-2">
         <li>Les sociétés à l’impôt sur les sociétés.</li>
         <li>Les meublés de tourisme et chambres d’hôtes.</li>
         <li>Les dispositifs Pinel, Denormandie, Malraux, Loc’Avantages.</li>
@@ -63,7 +69,7 @@ async function essayer() {
         <li>Les loueurs en meublé professionnels (LMP).</li>
         <li>Plusieurs biens dans un même dossier : un bien à la fois.</li>
       </ul>
-      <NuxtLink to="/methode" class="bouton-discret mt-3 -ml-3"
+      <NuxtLink to="/methode" class="btn btn-ghost mt-5 -ml-2"
         >Lire la méthode et les sources</NuxtLink
       >
     </section>

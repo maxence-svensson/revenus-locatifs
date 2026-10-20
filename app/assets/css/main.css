@@ -1,120 +1,381 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:where(.dark, .dark *));
+/*
+ * Même famille que Crypto-plusvalue : fond clair presque opaque, halos très diffus, verre dépoli
+ * là où il crée de la hiérarchie (barre de navigation, cartes principales), surfaces pleines pour
+ * les tableaux. Identité propre : un accent vert d'eau à la place du bleu, des halos verts et
+ * ambrés, et la « balance » entre les deux régimes comme signature. Choix dans docs/design.md.
+ */
 
-@theme {
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+:root {
+  color-scheme: light dark;
 
-  --color-fond: #f5f5f7;
-  --color-surface: rgba(255, 255, 255, 0.78);
-  --color-surface-pleine: #ffffff;
-  --color-bordure: rgba(0, 0, 0, 0.08);
-  --color-texte: #1d1d1f;
-  --color-texte-doux: #6e6e73;
-  --color-accent: #0f766e;
-  --color-accent-doux: #ccfbf1;
-  --color-accent-texte: #ffffff;
-  --color-positif: #15803d;
-  --color-negatif: #b91c1c;
-  --color-attention: #b45309;
-  --color-attention-doux: #fef3c7;
-  --color-micro: #2563eb;
-  --color-reel: #0f766e;
+  --background: light-dark(#f5f5f7, #000000);
+  --elevated: light-dark(#ffffff, #1c1c1e);
+  --surface: light-dark(rgb(255 255 255 / 0.62), rgb(28 28 30 / 0.62));
+  --surface-strong: light-dark(rgb(255 255 255 / 0.78), rgb(44 44 46 / 0.78));
+  --surface-subtle: light-dark(rgb(255 255 255 / 0.38), rgb(28 28 30 / 0.42));
+  --border: light-dark(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.12));
+  --separator: light-dark(rgb(60 60 67 / 0.14), rgb(84 84 88 / 0.5));
+  --field: light-dark(rgb(118 118 128 / 0.08), rgb(118 118 128 / 0.24));
+  --text-primary: light-dark(#1d1d1f, #f5f5f7);
+  --text-secondary: light-dark(#6e6e73, #a1a1a6);
+  --segment: light-dark(#ffffff, #636366);
 
-  --radius-carte: 1.25rem;
-  --shadow-carte: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.12);
+  /* Vert d'eau : #0f766e donne 5,4:1 avec du blanc ; le lien, 5,6:1 sur le fond clair. */
+  --accent: #0f766e;
+  --accent-strong: #0b5f59;
+  --link: light-dark(#0b6b5e, #34d1b6);
+  --accent-tint: light-dark(rgb(15 118 110 / 0.1), rgb(52 209 182 / 0.16));
+  --gain: light-dark(#1a7f37, #30d158);
+  --loss: light-dark(#d70015, #ff6961);
+  /* Séries des graphiques : paire bleu / orange, lisible en vision deutéranope. */
+  --series-1: light-dark(#2a78d6, #3987e5);
+  --series-2: light-dark(#eb6834, #d95926);
+  --warning: light-dark(#b83000, #ff9f0a);
+  --warning-tint: light-dark(rgb(255 149 0 / 0.14), rgb(255 159 10 / 0.16));
+  --success-tint: light-dark(rgb(52 199 89 / 0.14), rgb(48 209 88 / 0.16));
+
+  --glass-shadow: 0 8px 32px light-dark(rgb(0 0 0 / 0.08), rgb(0 0 0 / 0.5));
+  --glass-shadow-floating:
+    0 12px 48px light-dark(rgb(0 0 0 / 0.12), rgb(0 0 0 / 0.6)),
+    0 2px 8px light-dark(rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.3));
+  --glass-highlight: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.08));
+  --glass-sheen: linear-gradient(
+    180deg,
+    light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.06)),
+    rgb(255 255 255 / 0) 42%
+  );
+  /* Halos du fond : vert, vert d'eau, ambre et un peu de bleu. */
+  --glow-green: light-dark(rgb(52 199 89 / 0.11), rgb(52 199 89 / 0.17));
+  --glow-teal: light-dark(rgb(48 176 199 / 0.1), rgb(48 176 199 / 0.16));
+  --glow-amber: light-dark(rgb(255 159 10 / 0.09), rgb(255 159 10 / 0.13));
+  --glow-blue: light-dark(rgb(0 122 255 / 0.07), rgb(0 122 255 / 0.12));
 }
 
-.dark {
-  --color-fond: #000000;
-  --color-surface: rgba(28, 28, 30, 0.78);
-  --color-surface-pleine: #1c1c1e;
-  --color-bordure: rgba(255, 255, 255, 0.1);
-  --color-texte: #f5f5f7;
-  --color-texte-doux: #a1a1a6;
-  --color-accent: #2dd4bf;
-  --color-accent-doux: rgba(45, 212, 191, 0.16);
-  --color-accent-texte: #042f2e;
-  --color-positif: #4ade80;
-  --color-negatif: #f87171;
-  --color-attention: #fbbf24;
-  --color-attention-doux: rgba(251, 191, 36, 0.14);
-  --color-micro: #60a5fa;
-  --color-reel: #2dd4bf;
-  --shadow-carte: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
-}
-
-html {
+:root[data-theme='light'] {
   color-scheme: light;
-  -webkit-text-size-adjust: 100%;
 }
-html.dark {
+
+:root[data-theme='dark'] {
   color-scheme: dark;
 }
 
-body {
-  @apply bg-fond text-texte font-sans antialiased;
-  font-feature-settings: 'tnum' 1;
+@theme inline {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --color-canvas: var(--background);
+  --color-elevated: var(--elevated);
+  --color-label: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-separator: var(--separator);
+  --color-field: var(--field);
+  --color-accent: var(--accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-link: var(--link);
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+  --color-success-tint: var(--success-tint);
+
+  --radius-chip: 12px;
+  --radius-control: 16px;
+  --radius-card: 28px;
+  --radius-section: 36px;
+
+  --ease-ios: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-label antialiased;
+    font-feature-settings: 'kern';
+  }
+
+  ::selection {
+    background: rgb(15 118 110 / 0.22);
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  @media (hover: hover) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(128 128 128 / 0.4) transparent;
+    }
+  }
+}
+
+@utility backdrop-glow {
+  background:
+    radial-gradient(circle at 10% 10%, var(--glow-green), transparent 42%),
+    radial-gradient(circle at 90% 16%, var(--glow-teal), transparent 40%),
+    radial-gradient(circle at 16% 76%, var(--glow-amber), transparent 40%),
+    radial-gradient(circle at 92% 90%, var(--glow-blue), transparent 38%);
+}
+
+/* Verre : le préfixe -webkit- avant la propriété standard, sinon la minification la supprime. */
+@utility glass {
+  background: var(--glass-sheen), var(--surface);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+}
+
+@utility glass-strong {
+  background: var(--glass-sheen), var(--surface-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
+}
+
+@utility glass-floating {
+  background: var(--glass-sheen), var(--surface-strong);
+  -webkit-backdrop-filter: blur(30px) saturate(190%);
+  backdrop-filter: blur(30px) saturate(190%);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow-floating), var(--glass-highlight);
+}
+
+/* Surface pleine pour les tableaux et les listes de chiffres. */
+@utility solid-card {
+  background: var(--elevated);
+  border: 1px solid var(--separator);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+@utility headline {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+/* Accroche : plus sobre que celle de Crypto-plusvalue, elle ne dépasse pas 4,5 rem. */
+@utility text-hero {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Petit intitulé de section, en capitales espacées. */
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-wide text-muted uppercase;
 }
 
 @layer components {
-  .carte {
-    @apply bg-surface border-bordure rounded-carte border p-5 shadow-carte backdrop-blur-xl sm:p-6;
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-control px-5 font-semibold whitespace-nowrap select-none;
+    transition:
+      transform 180ms var(--ease-ios),
+      box-shadow 180ms var(--ease-ios),
+      background-color 180ms var(--ease-ios);
   }
-  .carte-pleine {
-    @apply bg-surface-pleine border-bordure rounded-carte border p-5 shadow-carte sm:p-6;
+
+  @media (hover: hover) {
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
   }
-  .titre-section {
-    @apply text-texte-doux text-xs font-semibold tracking-wide uppercase;
+
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
   }
-  .bouton,
-  .bouton-principal,
-  .bouton-secondaire,
-  .bouton-discret {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50;
+
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
   }
-  .bouton-principal {
-    @apply bg-accent text-accent-texte hover:brightness-110;
+
+  .btn-primary {
+    color: #ffffff;
+    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+    box-shadow:
+      0 1px 2px rgb(5 60 55 / 0.2),
+      0 6px 16px rgb(15 118 110 / 0.22),
+      inset 0 1px 0 rgb(255 255 255 / 0.22);
   }
-  .bouton-secondaire {
-    @apply bg-surface-pleine border-bordure text-texte border hover:bg-accent-doux;
+
+  .btn-secondary {
+    @apply glass-strong text-label;
   }
-  .bouton-discret {
-    @apply text-accent px-3 py-1.5 hover:bg-accent-doux;
+
+  .btn-ghost {
+    @apply min-h-0 px-2 font-medium text-link;
   }
-  .champ {
-    @apply bg-surface-pleine border-bordure text-texte w-full rounded-xl border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-accent/40 sm:text-sm;
+
+  @media (hover: hover) {
+    .btn-ghost:hover:not(:disabled) {
+      @apply bg-accent-tint;
+    }
   }
-  .segment {
-    @apply bg-fond border-bordure inline-flex rounded-xl border p-1;
+
+  .btn-sm {
+    @apply min-h-9 rounded-chip px-3.5 text-sm;
   }
-  .segment > button {
-    @apply text-texte-doux rounded-lg px-3 py-1.5 text-sm font-medium transition;
+
+  .btn-danger {
+    @apply text-loss;
   }
-  .segment > button[aria-pressed='true'] {
-    @apply bg-surface-pleine text-texte shadow-sm;
+
+  .input {
+    @apply block min-h-12 w-full rounded-control border border-separator bg-field px-4 text-base text-label placeholder:text-muted;
+    transition:
+      border-color 180ms var(--ease-ios),
+      box-shadow 180ms var(--ease-ios),
+      background-color 180ms var(--ease-ios);
   }
+
+  .input:focus {
+    @apply border-accent bg-elevated outline-none;
+    box-shadow: 0 0 0 4px rgb(15 118 110 / 0.15);
+  }
+
+  select.input {
+    @apply appearance-none pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.875rem center;
+    background-repeat: no-repeat;
+  }
+
+  /* Contrôle segmenté : le choix actif ressort comme une pastille, comme sur iOS. */
+  .segmented {
+    @apply inline-flex flex-wrap gap-1 rounded-control bg-field p-1;
+  }
+
+  .segmented > label {
+    @apply numeric relative flex min-h-9 cursor-pointer items-center rounded-chip px-3.5 text-sm font-semibold text-muted;
+    transition:
+      background-color 220ms var(--ease-ios),
+      color 220ms var(--ease-ios),
+      box-shadow 220ms var(--ease-ios);
+  }
+
+  .segmented > label:hover {
+    @apply text-label;
+  }
+
+  .segmented > label:has(:checked) {
+    @apply text-label;
+    background: var(--segment);
+    box-shadow:
+      0 1px 3px rgb(0 0 0 / 0.12),
+      0 1px 1px rgb(0 0 0 / 0.04);
+  }
+
+  .segmented > label:has(:focus-visible) {
+    @apply outline-2 outline-offset-1 outline-accent;
+  }
+
+  /* Interrupteur, comme dans les réglages d'iOS. */
+  .switch {
+    @apply h-[1.95rem] w-[3.2rem] shrink-0 cursor-pointer appearance-none rounded-full;
+    background:
+      radial-gradient(circle, #ffffff 0.78rem, transparent 0.8rem) no-repeat 0 0 / 1.95rem 1.95rem,
+      light-dark(#e9e9eb, #39393d);
+    box-shadow: inset 0 0 0 1px var(--text-secondary);
+    transition:
+      background-position 220ms var(--ease-ios),
+      background-color 220ms var(--ease-ios);
+  }
+
+  .switch:checked {
+    background-color: var(--accent);
+    background-position: 100% 0;
+    box-shadow: none;
+  }
+
   .tableau {
-    @apply w-full text-sm;
+    @apply numeric w-full text-sm;
   }
+
   .tableau th {
-    @apply text-texte-doux px-2 py-2 text-left text-xs font-semibold tracking-wide uppercase first:pl-0 last:pr-0;
+    @apply px-2 py-2 text-left text-xs font-semibold tracking-wide text-muted uppercase first:pl-0 last:pr-0;
   }
+
   .tableau td {
-    @apply border-bordure border-t px-2 py-2 align-top first:pl-0 last:pr-0;
+    @apply border-t border-separator px-2 py-2.5 align-top first:pl-0 last:pr-0;
   }
-  .tableau .num,
+
   .num {
-    @apply text-right tabular-nums whitespace-nowrap;
+    @apply numeric text-right whitespace-nowrap;
+  }
+
+  /* Entrée de la page d'accueil : chaque élément arrive avec un décalage (--delay). */
+  .enter {
+    animation: enter 700ms var(--ease-ios) var(--delay, 0ms) both;
+  }
+
+  .popover-enter-active,
+  .popover-leave-active {
+    transition:
+      opacity 250ms var(--ease-ios),
+      transform 250ms var(--ease-ios);
+  }
+
+  .popover-enter-from,
+  .popover-leave-to {
+    opacity: 0;
+    transform: scale(0.96) translateY(-6px);
   }
 }
 
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* La balance : la barre du régime le moins cher se remplit à l'ouverture. */
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.balance-bar {
+  transform-origin: left;
+  animation: grow 900ms 200ms var(--ease-ios) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  .enter {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .balance-bar {
+    animation: none;
   }
 }

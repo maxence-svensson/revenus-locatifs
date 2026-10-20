@@ -10,9 +10,16 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },
-      title: 'Revenus locatifs : micro ou réel ?',
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+      title: 'Revenus locatifs : micro ou réel, la réponse chiffrée',
+      // Thème choisi par l'utilisateur, appliqué avant l'affichage : pas d'éclair de l'autre thème.
+      script: [
+        {
+          innerHTML:
+            "try{var t=localStorage.getItem('revenus-locatifs:theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}",
+        },
+      ],
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         {
           name: 'description',
           content:

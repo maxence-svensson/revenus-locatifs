@@ -29,16 +29,18 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
           <td class="num">{{ euros(a.reel.net) }}</td>
           <td
             class="num font-medium"
-            :class="a.ecart.greaterThan(0) ? 'text-reel' : a.ecart.lessThan(0) ? 'text-micro' : ''"
+            :class="
+              a.ecart.greaterThan(0) ? 'text-series-2' : a.ecart.lessThan(0) ? 'text-series-1' : ''
+            "
           >
             {{ eurosSigne(a.ecart) }}
           </td>
-          <td class="num text-texte-doux">{{ euros(a.micro.cumul) }}</td>
-          <td class="num text-texte-doux">{{ euros(a.reel.cumul) }}</td>
+          <td class="num text-muted">{{ euros(a.micro.cumul) }}</td>
+          <td class="num text-muted">{{ euros(a.reel.cumul) }}</td>
         </tr>
       </tbody>
     </table>
-    <p class="text-texte-doux mt-2 text-xs">
+    <p class="text-muted mt-2 text-xs">
       Un écart positif signifie que le réel coûte moins cher cette année-là. Les montants
       comprennent l’impôt à votre tranche, les prélèvements sociaux, l’économie d’un déficit imputé
       sur le revenu global et celle de la CSG déductible l’année suivante.
