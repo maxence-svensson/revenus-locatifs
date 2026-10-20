@@ -3,7 +3,8 @@
 Micro ou réel ? Le simulateur compare les régimes d’imposition d’un bien en location, nue ou
 meublée, année par année sur dix ans, et donne les cases à reporter sur la déclaration.
 
-**Démo :** à venir sur Vercel.
+**Démo :** https://revenus-locatifs.vercel.app, ou directement
+[l’exemple fictif](https://revenus-locatifs.vercel.app/resultat) après avoir cliqué sur « Voir un exemple ».
 
 > Revenus locatifs est un outil indépendant, sans lien avec l’administration fiscale : ses
 > résultats sont indicatifs et ne remplacent pas un conseil fiscal.
