@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --color-fond: #f5f5f7;
+  --color-surface: rgba(255, 255, 255, 0.78);
+  --color-surface-pleine: #ffffff;
+  --color-bordure: rgba(0, 0, 0, 0.08);
+  --color-texte: #1d1d1f;
+  --color-texte-doux: #6e6e73;
+  --color-accent: #0f766e;
+  --color-accent-doux: #ccfbf1;
+  --color-accent-texte: #ffffff;
+  --color-positif: #15803d;
+  --color-negatif: #b91c1c;
+  --color-attention: #b45309;
+  --color-attention-doux: #fef3c7;
+  --color-micro: #2563eb;
+  --color-reel: #0f766e;
+
+  --radius-carte: 1.25rem;
+  --shadow-carte: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -12px rgba(0, 0, 0, 0.12);
+}
+
+.dark {
+  --color-fond: #000000;
+  --color-surface: rgba(28, 28, 30, 0.78);
+  --color-surface-pleine: #1c1c1e;
+  --color-bordure: rgba(255, 255, 255, 0.1);
+  --color-texte: #f5f5f7;
+  --color-texte-doux: #a1a1a6;
+  --color-accent: #2dd4bf;
+  --color-accent-doux: rgba(45, 212, 191, 0.16);
+  --color-accent-texte: #042f2e;
+  --color-positif: #4ade80;
+  --color-negatif: #f87171;
+  --color-attention: #fbbf24;
+  --color-attention-doux: rgba(251, 191, 36, 0.14);
+  --color-micro: #60a5fa;
+  --color-reel: #2dd4bf;
+  --shadow-carte: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-fond text-texte font-sans antialiased;
+  font-feature-settings: 'tnum' 1;
+}
+
+@layer components {
+  .carte {
+    @apply bg-surface border-bordure rounded-carte border p-5 shadow-carte backdrop-blur-xl sm:p-6;
+  }
+  .carte-pleine {
+    @apply bg-surface-pleine border-bordure rounded-carte border p-5 shadow-carte sm:p-6;
+  }
+  .titre-section {
+    @apply text-texte-doux text-xs font-semibold tracking-wide uppercase;
+  }
+  .bouton,
+  .bouton-principal,
+  .bouton-secondaire,
+  .bouton-discret {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50;
+  }
+  .bouton-principal {
+    @apply bg-accent text-accent-texte hover:brightness-110;
+  }
+  .bouton-secondaire {
+    @apply bg-surface-pleine border-bordure text-texte border hover:bg-accent-doux;
+  }
+  .bouton-discret {
+    @apply text-accent px-3 py-1.5 hover:bg-accent-doux;
+  }
+  .champ {
+    @apply bg-surface-pleine border-bordure text-texte w-full rounded-xl border px-3 py-2 text-base outline-none focus:ring-2 focus:ring-accent/40 sm:text-sm;
+  }
+  .segment {
+    @apply bg-fond border-bordure inline-flex rounded-xl border p-1;
+  }
+  .segment > button {
+    @apply text-texte-doux rounded-lg px-3 py-1.5 text-sm font-medium transition;
+  }
+  .segment > button[aria-pressed='true'] {
+    @apply bg-surface-pleine text-texte shadow-sm;
+  }
+  .tableau {
+    @apply w-full text-sm;
+  }
+  .tableau th {
+    @apply text-texte-doux px-2 py-2 text-left text-xs font-semibold tracking-wide uppercase first:pl-0 last:pr-0;
+  }
+  .tableau td {
+    @apply border-bordure border-t px-2 py-2 align-top first:pl-0 last:pr-0;
+  }
+  .tableau .num,
+  .num {
+    @apply text-right tabular-nums whitespace-nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

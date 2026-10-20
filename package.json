@@ -1,0 +1,42 @@
+{
+  "name": "revenus-locatifs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Simulateur des revenus locatifs pour la déclaration française : micro ou réel, location nue ou meublée (LMNP). Vos données restent dans votre navigateur.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^1.0.2",
+    "decimal.js": "^10.6.0",
+    "nuxt": "^4.6.0",
+    "pinia": "^4.0.3",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "eslint": "^10.12.0",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.12"
+  }
+}
