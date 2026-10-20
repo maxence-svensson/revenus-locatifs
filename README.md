@@ -1,5 +1,7 @@
 # Revenus locatifs
 
+[![CI](https://github.com/maxence-svensson/revenus-locatifs/actions/workflows/ci.yml/badge.svg)](https://github.com/maxence-svensson/revenus-locatifs/actions/workflows/ci.yml)
+
 Micro ou réel ? Le simulateur compare les régimes d’imposition d’un bien en location, nue ou
 meublée, année par année sur dix ans, et donne les cases à reporter sur la déclaration.
 
@@ -51,6 +53,8 @@ meublée, année par année sur dix ans, et donne les cases à reporter sur la d
   la doctrine. Les règles et leurs sources sont dans [`docs/regles-fiscales.md`](docs/regles-fiscales.md).
 - **Des règles versionnées par année de revenus** : une projection applique les règles connues et
   le dit.
+- **Confidentialité documentée** : ce que le navigateur garde, les en-têtes posés, les entrées
+  validées, dans [`SECURITY.md`](SECURITY.md).
 - **Dire ce que l’outil ne fait pas** : un bien à la fois, pas de meublé de tourisme, pas de
   dispositif de défiscalisation, pas de plus-value à la revente. La liste complète est sur la
   page Méthode.

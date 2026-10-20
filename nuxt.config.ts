@@ -7,6 +7,21 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   vite: { plugins: [tailwindcss()] },
   typescript: { strict: true },
+  // En-têtes de sécurité sur toutes les réponses. La CSP se limite à ce qui ne gêne pas les
+  // scripts intégrés de Nuxt ; voir SECURITY.md.
+  routeRules: {
+    '/**': {
+      headers: {
+        'Content-Security-Policy':
+          "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+        'X-Frame-Options': 'DENY',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+      },
+    },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },
