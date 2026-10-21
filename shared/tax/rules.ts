@@ -17,8 +17,29 @@ export interface ComposantAmortissement {
   dureeAnnees: number
 }
 
+export interface TrancheBareme {
+  /** Le taux s'applique à la part du revenu par part qui dépasse ce seuil. */
+  aPartirDe: Decimal
+  /** En pourcentage. */
+  taux: Decimal
+}
+
 export interface ReglesAnnee {
   annee: number
+  /** Impôt sur le revenu : barème progressif, quotient familial et décote (CGI art. 197). */
+  bareme: {
+    tranches: TrancheBareme[]
+    /** Plafond de l'avantage du quotient familial, par demi-part au-delà des parts de base. */
+    plafondDemiPart: Decimal
+    /** Plafond par quart de part (garde alternée). */
+    plafondQuartPart: Decimal
+    /** Décote : forfait moins un pourcentage de l'impôt brut. */
+    decoteForfaitSeul: Decimal
+    decoteForfaitCouple: Decimal
+    decoteTaux: Decimal
+    /** En dessous de ce montant, l'impôt n'est pas mis en recouvrement (CGI art. 1657). */
+    seuilRecouvrement: Decimal
+  }
   /** Prélèvements sociaux sur les revenus du patrimoine. */
   prelevementsSociaux: Decimal
   /** Part de la CSG déductible du revenu global de l'année suivante. */
@@ -52,6 +73,21 @@ export interface ReglesAnnee {
 
 const REGLES_2025: ReglesAnnee = {
   annee: 2025,
+  bareme: {
+    tranches: [
+      { aPartirDe: d(0), taux: d(0) },
+      { aPartirDe: d(11600), taux: d(11) },
+      { aPartirDe: d(29579), taux: d(30) },
+      { aPartirDe: d(84577), taux: d(41) },
+      { aPartirDe: d(181917), taux: d(45) },
+    ],
+    plafondDemiPart: d(1807),
+    plafondQuartPart: d(904),
+    decoteForfaitSeul: d(897),
+    decoteForfaitCouple: d(1483),
+    decoteTaux: d('45.25'),
+    seuilRecouvrement: d(61),
+  },
   prelevementsSociaux: d('17.2'),
   csgDeductible: d('6.8'),
   foncier: {

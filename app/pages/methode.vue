@@ -69,14 +69,19 @@ useSeoMeta({ title: 'Méthode et sources' })
     <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
       <h2 class="headline text-2xl">Ce qui s’ajoute dans les deux cas</h2>
       <p>
-        <strong>Impôt sur le revenu.</strong> Le revenu net est imposé à votre tranche marginale,
-        supposée constante. L’outil ne recalcule pas tout le barème : un revenu locatif qui ferait
-        changer de tranche est traité à la tranche indiquée.
+        <strong>Impôt sur le revenu.</strong> L’outil calcule l’impôt de votre foyer au barème
+        progressif, avec et sans le bien : la différence est l’impôt que le bien vous coûte. Il
+        applique le quotient familial, son plafonnement (1 807 € par demi-part, 904 € par quart de
+        part) et la décote (897 € pour une personne seule, 1 483 € pour un couple, moins 45,25 % de
+        l’impôt brut), et ne recouvre pas un impôt inférieur à 61 €. Un revenu locatif qui fait
+        changer de tranche, un déficit qui en fait redescendre, sont ainsi imposés exactement. Votre
+        revenu hors ce bien est supposé constant sur la période.
+        <span class="text-muted">CGI art. 193, 197 et 1657 ; BOI-IR-LIQ-20-20-30.</span>
       </p>
       <p>
         <strong>Prélèvements sociaux.</strong> 17,2 % sur le revenu net positif. 6,8 points de CSG
         sont déductibles du revenu global de l’année suivante : l’outil compte cette économie
-        l’année d’après, à votre tranche.
+        l’année d’après, au barème.
         <span class="text-muted">CGI art. 154 quinquies.</span>
       </p>
       <p>
@@ -125,6 +130,15 @@ useSeoMeta({ title: 'Méthode et sources' })
           monuments historiques).
         </li>
         <li>Pas de plus-value à la revente, pas d’IFI.</li>
+        <li>
+          Pas de demi-part de parent isolé (case T) ni de veuf avec enfants, dont les plafonds sont
+          particuliers ; pas de réductions ni de crédits d’impôt, ni de contribution sur les hauts
+          revenus.
+        </li>
+        <li>
+          Un déficit imputé qui dépasse le revenu du foyer ne forme pas de déficit global
+          reportable.
+        </li>
         <li>
           Les règles connues s’arrêtent aux revenus 2025 ; les années suivantes les appliquent
           telles quelles.

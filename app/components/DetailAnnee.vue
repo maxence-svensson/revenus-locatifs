@@ -3,6 +3,10 @@ import type { LigneProjection } from '#shared/projection/projection'
 import type { Decimal } from '#shared/tax/decimal'
 
 const props = defineProps<{ ligne: LigneProjection }>()
+const libellePs = computed(
+  () => `Prélèvements sociaux ${pourcent(props.ligne.regles.prelevementsSociaux, 1)}`,
+)
+const libelleImpot = (tmi: number) => `Impôt sur le revenu, au barème (tranche ${tmi} %)`
 
 interface Ligne {
   libelle: string
@@ -25,10 +29,10 @@ const micro = computed<Ligne[]>(() => {
     })
   lignes.push({ libelle: 'Base imposable', montant: r.baseImposable, total: true })
   lignes.push({
-    libelle: `Impôt sur le revenu (${props.ligne.brut.annee})`,
-    montant: r.impotRevenu,
+    libelle: libelleImpot(props.ligne.micro.tmi),
+    montant: props.ligne.micro.impotRevenu,
   })
-  lignes.push({ libelle: 'Prélèvements sociaux 17,2 %', montant: r.prelevementsSociaux })
+  lignes.push({ libelle: libellePs.value, montant: r.prelevementsSociaux })
   if (props.ligne.micro.economieCsgDeductible.greaterThan(0))
     lignes.push({
       libelle: 'CSG déductible de l’année précédente',
@@ -101,12 +105,15 @@ const reel = computed<Ligne[]>(() => {
         moins: true,
       })
     lignes.push({ libelle: 'Base imposable', montant: r.baseImposable, total: true })
-    lignes.push({ libelle: 'Impôt sur le revenu', montant: r.impotRevenu })
-    lignes.push({ libelle: 'Prélèvements sociaux 17,2 %', montant: r.prelevementsSociaux })
-    if (r.economieDeficitGlobal.greaterThan(0))
+    lignes.push({
+      libelle: libelleImpot(props.ligne.reel.tmi),
+      montant: props.ligne.reel.impotRevenu,
+    })
+    lignes.push({ libelle: libellePs.value, montant: r.prelevementsSociaux })
+    if (props.ligne.reel.economieDeficitGlobal.greaterThan(0))
       lignes.push({
         libelle: 'Économie d’impôt du déficit imputé',
-        montant: r.economieDeficitGlobal,
+        montant: props.ligne.reel.economieDeficitGlobal,
         moins: true,
       })
   } else {
@@ -163,8 +170,11 @@ const reel = computed<Ligne[]>(() => {
         moins: true,
       })
     lignes.push({ libelle: 'Base imposable', montant: r.baseImposable, total: true })
-    lignes.push({ libelle: 'Impôt sur le revenu', montant: r.impotRevenu })
-    lignes.push({ libelle: 'Prélèvements sociaux 17,2 %', montant: r.prelevementsSociaux })
+    lignes.push({
+      libelle: libelleImpot(props.ligne.reel.tmi),
+      montant: props.ligne.reel.impotRevenu,
+    })
+    lignes.push({ libelle: libellePs.value, montant: r.prelevementsSociaux })
   }
   if (props.ligne.reel.economieCsgDeductible.greaterThan(0))
     lignes.push({

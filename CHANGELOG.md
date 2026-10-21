@@ -4,6 +4,17 @@ Les changements notables, du plus récent au plus ancien.
 
 ## 21 octobre 2026
 
+### L'impôt au barème, à la place de la tranche marginale
+
+- Le foyer se décrit par sa situation (personne seule ou couple), son nombre de parts et son
+  revenu net imposable hors ce bien. L'impôt est calculé au barème des revenus 2025 avec et sans
+  le bien : quotient familial, plafonnement à 1 807 € par demi-part, décote et seuil de
+  recouvrement de 61 € compris.
+- Le détail d'une année affiche la tranche marginale du foyer dans chaque régime ; l'économie du
+  déficit foncier et celle de la CSG déductible sont recalculées au barème.
+- Un dossier enregistré par la version précédente est repris : son foyer devient une personne
+  seule dont le revenu correspond à la tranche choisie, avec un message qui invite à le vérifier.
+
 ### Nue ou meublée, les quatre régimes côte à côte
 
 - Le résultat compare le même bien en location nue et en location meublée : micro-foncier, réel

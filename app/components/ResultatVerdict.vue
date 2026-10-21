@@ -49,7 +49,7 @@ const barres = computed(() => {
 <template>
   <div class="glass-strong rounded-section p-6 sm:p-8">
     <p class="text-sm text-muted">
-      Sur {{ horizon }} {{ horizon > 1 ? 'ans' : 'an' }}, à tranche constante
+      Sur {{ horizon }} {{ horizon > 1 ? 'ans' : 'an' }}, au barème de l’impôt
     </p>
     <h2 class="headline mt-1 text-2xl sm:text-3xl">{{ titre }}</h2>
     <p v-if="p.recommandation !== 'indifferent'" class="mt-4">

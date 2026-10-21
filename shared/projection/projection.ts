@@ -1,5 +1,6 @@
 import type { Decimal } from '../tax/decimal'
-import { d, ZERO, euros, pourcent } from '../tax/decimal'
+import { d, ZERO } from '../tax/decimal'
+import { impotSurLeRevenu, type FoyerFiscal } from '../tax/bareme'
 import type { Dossier } from '../model/dossier'
 import { anneesBrutes, type AnneeBrute } from '../tax/charges'
 import { reglesPour, DERNIERE_ANNEE_CONNUE, type ReglesAnnee } from '../tax/rules'
@@ -24,8 +25,15 @@ export type ResultatReel = ResultatReelFoncier | ResultatReelBic
 
 export interface CoteAnnee<R> {
   resultat: R
-  /** Économie d'impôt sur le revenu grâce à la CSG déductible de l'année précédente. */
+  /** Impôt sur le revenu que le bien ajoute au foyer, au barème. */
+  impotRevenu: Decimal
+  /** Impôt en moins grâce au déficit foncier imputé sur le revenu global. */
+  economieDeficitGlobal: Decimal
+  /** Impôt en moins grâce à la CSG déductible de l'année précédente. */
   economieCsgDeductible: Decimal
+  prelevementsSociaux: Decimal
+  /** Tranche marginale du foyer cette année, bien compris. */
+  tmi: number
   /** Impôt et prélèvements de l'année, net des économies (déficit global, CSG déductible). */
   net: Decimal
   cumul: Decimal
@@ -62,12 +70,49 @@ export interface Projection {
 /** Au-dessous de cet écart cumulé, on ne tranche pas entre les deux régimes. */
 const SEUIL_INDIFFERENCE = d(100)
 
+/**
+ * L'impôt qu'un régime coûte au foyer une année : impôt du foyer avec le bien moins impôt du
+ * foyer sans lui, au barème. L'écart se décompose dans l'ordre de l'avis : le revenu locatif,
+ * puis le déficit imputé sur le revenu global, puis la CSG déductible de l'année précédente.
+ * Chaque étape se calcule exactement, même quand elle fait changer de tranche.
+ */
+function cote<R extends ResultatMicro | ResultatReel>(
+  resultat: R,
+  csgAnneePrecedente: Decimal,
+  revenuFoyer: Decimal,
+  foyer: FoyerFiscal,
+  regles: ReglesAnnee,
+  cumulPrecedent: Decimal,
+): CoteAnnee<R> {
+  const deficitGlobal =
+    resultat.regime === 'reel-foncier' ? resultat.deficitImputeRevenuGlobal : ZERO
+  const impot = (revenu: Decimal) => impotSurLeRevenu(revenu, foyer, regles)
+  const sansLeBien = impot(revenuFoyer)
+  const avecRevenu = impot(revenuFoyer.plus(resultat.baseImposable))
+  const apresDeficit = impot(revenuFoyer.plus(resultat.baseImposable).minus(deficitGlobal))
+  const final = impot(
+    revenuFoyer.plus(resultat.baseImposable).minus(deficitGlobal).minus(csgAnneePrecedente),
+  )
+  const net = final.impot.minus(sansLeBien.impot).plus(resultat.prelevementsSociaux)
+  return {
+    resultat,
+    impotRevenu: avecRevenu.impot.minus(sansLeBien.impot),
+    economieDeficitGlobal: avecRevenu.impot.minus(apresDeficit.impot),
+    economieCsgDeductible: apresDeficit.impot.minus(final.impot),
+    prelevementsSociaux: resultat.prelevementsSociaux,
+    tmi: final.tmi,
+    net,
+    cumul: cumulPrecedent.plus(net),
+  }
+}
+
 export function projeter(dossier: Dossier): Projection {
   const { bien, foyer, horizonAnnees } = dossier
   const brutes = anneesBrutes(bien, horizonAnnees)
   const reglesInitiales = reglesPour(bien.anneeMiseEnLocation)
   const plan = bien.typeLocation === 'meublee' ? planAmortissement(bien, reglesInitiales) : []
-  const tmi = foyer.tmi
+  const foyerFiscal: FoyerFiscal = { situation: foyer.situation, parts: foyer.parts }
+  const revenuFoyer = d(foyer.revenuImposable)
   const autres = d(foyer.autresRecettesMemeCategorie)
 
   const annees: LigneProjection[] = []
@@ -85,27 +130,25 @@ export function projeter(dossier: Dossier): Projection {
     let micro: ResultatMicro
     let reel: ResultatReel
     if (bien.typeLocation === 'nue') {
-      const m = microFoncier(brut, tmi, autres, reportMicroF, regles)
-      const r = reelFoncier(brut, tmi, reportReelF, regles)
+      const m = microFoncier(brut, autres, reportMicroF, regles)
+      const r = reelFoncier(brut, reportReelF, regles)
       reportMicroF = m.report
       reportReelF = r.report
       micro = m
       reel = r
     } else {
-      const m = microBic(brut, tmi, autres, reportMicroB, regles)
-      const r = reelBic(brut, tmi, plan, reportReelB, regles)
+      const m = microBic(brut, autres, reportMicroB, regles)
+      const r = reelBic(brut, plan, reportReelB, regles)
       reportMicroB = m.report
       reportReelB = r.report
       micro = m
       reel = r
     }
 
-    const economieCsgMicro = euros(csgMicro.times(pourcent(tmi)))
-    const economieCsgReel = euros(csgReel.times(pourcent(tmi)))
-    const netMicro = micro.total.minus(economieCsgMicro)
-    const netReel = reel.total.minus(economieCsgReel)
-    cumulMicro = cumulMicro.plus(netMicro)
-    cumulReel = cumulReel.plus(netReel)
+    const coteMicro = cote(micro, csgMicro, revenuFoyer, foyerFiscal, regles, cumulMicro)
+    const coteReel = cote(reel, csgReel, revenuFoyer, foyerFiscal, regles, cumulReel)
+    cumulMicro = coteMicro.cumul
+    cumulReel = coteReel.cumul
     csgMicro = micro.csgDeductibleAnneeSuivante
     csgReel = reel.csgDeductibleAnneeSuivante
 
@@ -114,19 +157,9 @@ export function projeter(dossier: Dossier): Projection {
       rang: brut.rang,
       brut,
       regles,
-      micro: {
-        resultat: micro,
-        economieCsgDeductible: economieCsgMicro,
-        net: netMicro,
-        cumul: cumulMicro,
-      },
-      reel: {
-        resultat: reel,
-        economieCsgDeductible: economieCsgReel,
-        net: netReel,
-        cumul: cumulReel,
-      },
-      ecart: netMicro.minus(netReel),
+      micro: coteMicro,
+      reel: coteReel,
+      ecart: coteMicro.net.minus(coteReel.net),
     })
   }
 
@@ -160,6 +193,16 @@ export function projeter(dossier: Dossier): Projection {
   ) {
     avertissements.push(
       'Un déficit imputé sur le revenu global oblige à louer le bien jusqu’au 31 décembre de la troisième année qui suit, sous peine de reprise.',
+    )
+  }
+  if (
+    bien.typeLocation === 'nue' &&
+    annees.some((a) =>
+      (a.reel.resultat as ResultatReelFoncier).deficitImputeRevenuGlobal.greaterThan(revenuFoyer),
+    )
+  ) {
+    avertissements.push(
+      'Le déficit imputé dépasse le revenu imposable du foyer : l’excédent forme un déficit global reportable six ans, que l’outil ne reporte pas.',
     )
   }
   if (bien.typeLocation === 'meublee' && recommandation === 'reel') {
