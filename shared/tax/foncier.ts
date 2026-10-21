@@ -1,5 +1,6 @@
 import type { Decimal } from './decimal'
 import { d, ZERO, somme, max0, min, euros, pourcent } from './decimal'
+import { prelevementsSurBase } from './sociaux'
 import type { AnneeBrute } from './charges'
 import type { ReglesAnnee } from './rules'
 
@@ -29,9 +30,7 @@ export interface ResultatMicroFoncier {
   revenuNet: Decimal
   deficitsAnterieursImputes: Decimal
   baseImposable: Decimal
-  impotRevenu: Decimal
   prelevementsSociaux: Decimal
-  total: Decimal
   csgDeductibleAnneeSuivante: Decimal
   report: ReportFoncier
 }
@@ -58,12 +57,7 @@ export interface ResultatReelFoncier {
   deficitReportable: Decimal
   deficitsAnterieursImputes: Decimal
   baseImposable: Decimal
-  impotRevenu: Decimal
-  /** Économie d'impôt due au déficit imputé sur le revenu global, à la TMI. */
-  economieDeficitGlobal: Decimal
   prelevementsSociaux: Decimal
-  /** Impôt et prélèvements, net de l'économie du déficit (peut être négatif). */
-  total: Decimal
   csgDeductibleAnneeSuivante: Decimal
   report: ReportFoncier
 }
@@ -88,22 +82,8 @@ function imputerDeficitsAnterieurs(
   return { impute, report: { deficits } }
 }
 
-function impots(base: Decimal, tmi: number, regles: ReglesAnnee) {
-  const baseArrondie = euros(max0(base))
-  const impotRevenu = euros(baseArrondie.times(pourcent(tmi)))
-  const prelevementsSociaux = euros(baseArrondie.times(pourcent(regles.prelevementsSociaux)))
-  const csgDeductibleAnneeSuivante = euros(baseArrondie.times(pourcent(regles.csgDeductible)))
-  return {
-    baseImposable: baseArrondie,
-    impotRevenu,
-    prelevementsSociaux,
-    csgDeductibleAnneeSuivante,
-  }
-}
-
 export function microFoncier(
   annee: AnneeBrute,
-  tmi: number,
   autresRecettes: Decimal,
   report: ReportFoncier,
   regles: ReglesAnnee,
@@ -115,7 +95,7 @@ export function microFoncier(
   const revenuNet = recettes.minus(abattement)
   const imputation = imputerDeficitsAnterieurs(revenuNet, report, annee.annee, regles)
   const base = revenuNet.minus(imputation.impute)
-  const calc = impots(base, tmi, regles)
+  const calc = prelevementsSurBase(base, regles)
   return {
     regime: 'micro-foncier',
     applicable,
@@ -127,14 +107,12 @@ export function microFoncier(
     revenuNet,
     deficitsAnterieursImputes: imputation.impute,
     ...calc,
-    total: calc.impotRevenu.plus(calc.prelevementsSociaux),
     report: imputation.report,
   }
 }
 
 export function reelFoncier(
   annee: AnneeBrute,
-  tmi: number,
   report: ReportFoncier,
   regles: ReglesAnnee,
 ): ResultatReelFoncier {
@@ -205,8 +183,7 @@ export function reelFoncier(
     nouveauReport = imputation.report
   }
 
-  const calc = impots(base, tmi, regles)
-  const economieDeficitGlobal = euros(deficitImputeRevenuGlobal.times(pourcent(tmi)))
+  const calc = prelevementsSurBase(base, regles)
   return {
     regime: 'reel-foncier',
     recettes,
@@ -219,8 +196,6 @@ export function reelFoncier(
     deficitReportable,
     deficitsAnterieursImputes,
     ...calc,
-    economieDeficitGlobal,
-    total: calc.impotRevenu.plus(calc.prelevementsSociaux).minus(economieDeficitGlobal),
     report: nouveauReport,
   }
 }

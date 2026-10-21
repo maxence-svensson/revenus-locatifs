@@ -22,6 +22,9 @@ export const useDossierStore = defineStore('dossier', () => {
   const anneeCourante = new Date().getFullYear()
   const brouillon = ref<Brouillon>(dossierVide(anneeCourante))
   const demo = ref(false)
+  /** Le dossier repris d'une version précédente a un foyer estimé, à vérifier. */
+  const aRevoir = ref(false)
+  let foyerRepris = ''
   const charge = ref(false)
   const touche = ref(false)
 
@@ -48,6 +51,8 @@ export const useDossierStore = defineStore('dossier', () => {
     if (sauve) {
       brouillon.value = sauve.dossier
       demo.value = sauve.demo
+      aRevoir.value = sauve.aRevoir
+      foyerRepris = JSON.stringify(sauve.dossier.foyer)
       touche.value = true
     }
     charge.value = true
@@ -56,13 +61,15 @@ export const useDossierStore = defineStore('dossier', () => {
   function chargerExemple() {
     brouillon.value = dossierExemple(anneeCourante)
     demo.value = true
+    aRevoir.value = false
     touche.value = true
-    enregistrerDossier({ demo: true, dossier: brouillon.value })
+    enregistrerDossier({ demo: true, aRevoir: false, dossier: brouillon.value })
   }
 
   function reinitialiser() {
     brouillon.value = dossierVide(anneeCourante)
     demo.value = false
+    aRevoir.value = false
     touche.value = false
     effacerDossier()
   }
@@ -100,8 +107,15 @@ export const useDossierStore = defineStore('dossier', () => {
         JSON.stringify(brouillon.value) !== JSON.stringify(dossierExemple(anneeCourante))
       )
         demo.value = false
+      // Le foyer estimé cesse d'être à revoir dès que l'utilisateur y touche.
+      if (aRevoir.value && JSON.stringify(brouillon.value.foyer) !== foyerRepris)
+        aRevoir.value = false
       if (validation.value.success)
-        enregistrerDossier({ demo: demo.value, dossier: validation.value.data })
+        enregistrerDossier({
+          demo: demo.value,
+          aRevoir: aRevoir.value,
+          dossier: validation.value.data,
+        })
     },
     { deep: true },
   )
@@ -113,6 +127,7 @@ export const useDossierStore = defineStore('dossier', () => {
     projection,
     comparaison,
     demo,
+    aRevoir,
     touche,
     renseigne,
     charger,

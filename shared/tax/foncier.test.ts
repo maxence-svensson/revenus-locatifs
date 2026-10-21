@@ -30,23 +30,21 @@ function annee(partiel: Partial<AnneeBrute>): AnneeBrute {
 
 describe('micro-foncier', () => {
   it('applique l’abattement de 30 %', () => {
-    const r = microFoncier(annee({ loyers: d(12000) }), 30, ZERO, REPORT_FONCIER_VIDE, regles)
+    const r = microFoncier(annee({ loyers: d(12000) }), ZERO, REPORT_FONCIER_VIDE, regles)
     expect(r.applicable).toBe(true)
     expect(r.abattement.toFixed(0)).toBe('3600')
     expect(r.baseImposable.toFixed(0)).toBe('8400')
-    expect(r.impotRevenu.toFixed(0)).toBe('2520')
     expect(r.prelevementsSociaux.toFixed(0)).toBe('1445')
-    expect(r.total.toFixed(0)).toBe('3965')
     expect(r.csgDeductibleAnneeSuivante.toFixed(0)).toBe('571')
   })
   it('n’est plus applicable au-dessus de 15 000 € de recettes du foyer', () => {
-    const r = microFoncier(annee({ loyers: d(9000) }), 30, d(7000), REPORT_FONCIER_VIDE, regles)
+    const r = microFoncier(annee({ loyers: d(9000) }), d(7000), REPORT_FONCIER_VIDE, regles)
     expect(r.applicable).toBe(false)
     expect(r.motifInapplicable).toMatch(/15000/)
   })
   it('impute les déficits antérieurs sur le revenu net', () => {
     const report = { deficits: [{ annee: 2023, montant: d(5000) }] }
-    const r = microFoncier(annee({ loyers: d(10000) }), 30, ZERO, report, regles)
+    const r = microFoncier(annee({ loyers: d(10000) }), ZERO, report, regles)
     expect(r.deficitsAnterieursImputes.toFixed(0)).toBe('5000')
     expect(r.baseImposable.toFixed(0)).toBe('2000')
     expect(r.report.deficits).toHaveLength(0)
@@ -62,7 +60,6 @@ describe('réel foncier', () => {
         assurances: d(300),
         interetsEmprunt: d(2000),
       }),
-      30,
       REPORT_FONCIER_VIDE,
       regles,
     )
@@ -70,7 +67,6 @@ describe('réel foncier', () => {
     expect(r.charges.total.toFixed(0)).toBe('3220')
     expect(r.resultatBrut.toFixed(0)).toBe('8780')
     expect(r.baseImposable.toFixed(0)).toBe('8780')
-    expect(r.impotRevenu.toFixed(0)).toBe('2634')
     expect(r.prelevementsSociaux.toFixed(0)).toBe('1510')
     expect(r.deficitImputeRevenuGlobal.isZero()).toBe(true)
   })
@@ -81,7 +77,6 @@ describe('réel foncier', () => {
     // les 5 000 d'autres charges s'imputent sur le revenu global.
     const r = reelFoncier(
       annee({ loyers: d(10000), interetsEmprunt: d(12000), taxeFonciere: d(4980) }),
-      30,
       REPORT_FONCIER_VIDE,
       regles,
     )
@@ -90,8 +85,8 @@ describe('réel foncier', () => {
     expect(r.deficitAutresCharges.toFixed(0)).toBe('5000')
     expect(r.deficitImputeRevenuGlobal.toFixed(0)).toBe('5000')
     expect(r.deficitReportable.toFixed(0)).toBe('2000')
-    expect(r.economieDeficitGlobal.toFixed(0)).toBe('1500')
-    expect(r.total.toFixed(0)).toBe('-1500')
+    expect(r.baseImposable.isZero()).toBe(true)
+    expect(r.prelevementsSociaux.isZero()).toBe(true)
     expect(r.report.deficits).toEqual([{ annee: 2025, montant: d(2000) }])
   })
 
@@ -100,7 +95,6 @@ describe('réel foncier', () => {
     // Déficit « autres charges » = 30 000 − (20 000 − 5 000) = 15 000 : 10 700 sur le global, 4 300 en report.
     const r = reelFoncier(
       annee({ loyers: d(20000), interetsEmprunt: d(5000), travauxEntretien: d(29980) }),
-      41,
       REPORT_FONCIER_VIDE,
       regles,
     )
@@ -108,13 +102,11 @@ describe('réel foncier', () => {
     expect(r.deficitAutresCharges.toFixed(0)).toBe('15000')
     expect(r.deficitImputeRevenuGlobal.toFixed(0)).toBe('10700')
     expect(r.deficitReportable.toFixed(0)).toBe('4300')
-    expect(r.economieDeficitGlobal.toFixed(0)).toBe('4387')
   })
 
   it('relève le plafond à 21 400 € avec des travaux de rénovation énergétique', () => {
     const r = reelFoncier(
       annee({ loyers: d(10000), travauxEnergetique: d(30000) }),
-      30,
       REPORT_FONCIER_VIDE,
       regles,
     )
@@ -129,7 +121,7 @@ describe('réel foncier', () => {
         { annee: 2020, montant: d(3000) },
       ],
     }
-    const r = reelFoncier(annee({ loyers: d(5020) }), 30, report, regles)
+    const r = reelFoncier(annee({ loyers: d(5020) }), report, regles)
     // 5 020 − 20 de forfait = 5 000 ; le déficit de 2014 est périmé, celui de 2020 s'impute.
     expect(r.deficitsAnterieursImputes.toFixed(0)).toBe('3000')
     expect(r.baseImposable.toFixed(0)).toBe('2000')

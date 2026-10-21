@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { SITUATIONS, partsDeBase } from '../tax/bareme'
 
 /**
  * Le dossier décrit un bien mis en location et le foyer qui le détient.
@@ -9,8 +10,7 @@ import { z } from 'zod'
 export const TYPES_LOCATION = ['nue', 'meublee'] as const
 export type TypeLocation = (typeof TYPES_LOCATION)[number]
 
-export const TRANCHES = [0, 11, 30, 41, 45] as const
-export type Tranche = (typeof TRANCHES)[number]
+export { SITUATIONS, type Situation } from '../tax/bareme'
 
 export const NATURES_TRAVAUX = ['entretien', 'amelioration', 'energetique', 'construction'] as const
 export type NatureTravaux = (typeof NATURES_TRAVAUX)[number]
@@ -82,19 +82,25 @@ export const bienSchema = z.object({
 })
 export type Bien = z.infer<typeof bienSchema>
 
-export const foyerSchema = z.object({
-  /** Tranche marginale d'imposition du foyer. */
-  tmi: z.coerce
-    .number()
-    .pipe(z.union(TRANCHES.map((t) => z.literal(t))))
-    .default(30),
-  /** Autres recettes foncières ou BIC du foyer, qui comptent pour les plafonds du micro. */
-  autresRecettesMemeCategorie: montant.default(0),
-})
+export const foyerSchema = z
+  .object({
+    /** Personne seule, ou couple marié ou pacsé soumis à imposition commune. */
+    situation: z.enum(SITUATIONS).default('seul'),
+    /** Nombre de parts du quotient familial, par quarts de part. */
+    parts: z.coerce.number().min(1).max(20).multipleOf(0.25).default(1),
+    /** Revenu net imposable du foyer hors ce bien, supposé constant sur la projection. */
+    revenuImposable: montant.default(0),
+    /** Autres recettes foncières ou BIC du foyer, qui comptent pour les plafonds du micro. */
+    autresRecettesMemeCategorie: montant.default(0),
+  })
+  .refine((f) => f.parts >= partsDeBase(f.situation), {
+    message: 'Un couple marié ou pacsé compte au moins deux parts.',
+    path: ['parts'],
+  })
 export type Foyer = z.infer<typeof foyerSchema>
 
 export const dossierSchema = z.object({
-  version: z.literal(1).default(1),
+  version: z.literal(2).default(2),
   bien: bienSchema,
   foyer: foyerSchema,
   /** Nombre d'années projetées. */
@@ -154,7 +160,51 @@ export function dossierExemple(anneeCourante: number): Dossier {
         fraisDossier: 800,
       },
     },
-    foyer: { tmi: 30, autresRecettesMemeCategorie: 0 },
+    foyer: {
+      situation: 'couple',
+      parts: 2,
+      revenuImposable: 62000,
+      autresRecettesMemeCategorie: 0,
+    },
     horizonAnnees: 10,
   })
+}
+
+/**
+ * Revenu d'une personne seule, à une part, placé dans chaque tranche marginale : la version 1
+ * ne demandait que la tranche, la version 2 demande le revenu et les parts.
+ */
+const REVENU_PAR_TRANCHE: Record<number, number> = {
+  0: 10000,
+  11: 20000,
+  30: 50000,
+  41: 120000,
+  45: 250000,
+}
+
+/**
+ * Remet au format actuel un dossier enregistré par une version précédente. Un dossier de la
+ * version 1 garde son bien ; son foyer devient une personne seule à une part, avec un revenu
+ * qui la place dans la tranche qu'elle avait choisie, et `migre` le signale pour que
+ * l'interface demande de vérifier.
+ */
+export function migrerDossier(brut: unknown): { dossier: unknown; migre: boolean } {
+  if (!brut || typeof brut !== 'object') return { dossier: brut, migre: false }
+  const ancien = brut as { version?: unknown; foyer?: Record<string, unknown> }
+  if (ancien.version !== 1 && !(ancien.foyer && 'tmi' in ancien.foyer))
+    return { dossier: brut, migre: false }
+  const { tmi, ...foyer } = ancien.foyer ?? {}
+  return {
+    dossier: {
+      ...ancien,
+      version: 2,
+      foyer: {
+        ...foyer,
+        situation: 'seul',
+        parts: 1,
+        revenuImposable: REVENU_PAR_TRANCHE[Number(tmi)] ?? REVENU_PAR_TRANCHE[30],
+      },
+    },
+    migre: true,
+  }
 }

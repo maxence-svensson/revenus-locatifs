@@ -32,10 +32,20 @@ const optionsRegime = computed(() => [
   },
   { valeur: 'reel' as const, libelle: p.value.typeLocation === 'nue' ? 'Réel' : 'LMNP réel' },
 ])
+const avertissements = computed(() =>
+  store.aRevoir
+    ? [
+        'Votre dossier vient d’une version qui ne demandait que la tranche marginale : le revenu du foyer a été estimé. Indiquez votre situation, vos parts et votre revenu dans le simulateur.',
+        ...p.value.avertissements,
+      ]
+    : p.value.avertissements,
+)
 const hypotheses = computed(() => {
   const b = store.dossier.bien
+  const f = store.dossier.foyer
   const h = [
-    `Tranche marginale de ${store.dossier.foyer.tmi} % sur toute la période.`,
+    `${f.situation === 'couple' ? 'Couple marié ou pacsé' : 'Personne seule'}, ${nombreFr(f.parts)} ${f.parts > 1 ? 'parts' : 'part'}, revenu net imposable de ${euros(f.revenuImposable)} hors ce bien, constant sur la période.`,
+    'Impôt au barème progressif, avec le quotient familial, son plafonnement et la décote.',
     `Loyers revalorisés de ${nombreFr(b.revalorisationLoyersPourcent)} % par an, charges de ${nombreFr(b.revalorisationChargesPourcent)} %.`,
   ]
   if (b.vacanceMoisParAn > 0) h.push(`${nombreFr(b.vacanceMoisParAn)} mois de vacance par an.`)
@@ -71,7 +81,7 @@ const hypotheses = computed(() => {
     <div class="grid gap-6 lg:grid-cols-[22rem_1fr] lg:items-start">
       <div class="min-w-0 space-y-4">
         <ResultatVerdict :projection="p" />
-        <Avertissements :messages="p.avertissements" />
+        <Avertissements :messages="avertissements" />
         <div class="glass rounded-card p-5 sm:p-6">
           <h2 class="font-semibold tracking-tight">Hypothèses</h2>
           <ul class="text-muted space-y-1 text-sm">

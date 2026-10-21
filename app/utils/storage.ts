@@ -1,15 +1,18 @@
 import { z } from 'zod'
-import { dossierSchema, type Dossier } from '#shared/model/dossier'
+import { dossierSchema, migrerDossier, type Dossier } from '#shared/model/dossier'
 
 const CLE = 'revenus-locatifs:dossier:v1'
 
 const enregistrementSchema = z.object({
   demo: z.boolean().default(false),
+  /** Le dossier vient d'une version précédente : le foyer est à vérifier. */
+  aRevoir: z.boolean().default(false),
   dossier: dossierSchema,
 })
 
 export interface Enregistrement {
   demo: boolean
+  aRevoir: boolean
   dossier: Dossier
 }
 
@@ -19,7 +22,13 @@ export function lireDossier(): Enregistrement | null {
   try {
     const brut = localStorage.getItem(CLE)
     if (!brut) return null
-    const resultat = enregistrementSchema.safeParse(JSON.parse(brut))
+    const lu = JSON.parse(brut) as { dossier?: unknown; aRevoir?: unknown }
+    const { dossier, migre } = migrerDossier(lu?.dossier)
+    const resultat = enregistrementSchema.safeParse({
+      ...lu,
+      dossier,
+      aRevoir: lu?.aRevoir === true || migre,
+    })
     return resultat.success ? resultat.data : null
   } catch {
     return null

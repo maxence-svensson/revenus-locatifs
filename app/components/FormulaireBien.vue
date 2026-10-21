@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { TRANCHES, NATURES_TRAVAUX, type Tranche, type NatureTravaux } from '#shared/model/dossier'
+import { NATURES_TRAVAUX, type NatureTravaux } from '#shared/model/dossier'
+import { impotSurLeRevenu, partsDeBase, type Situation } from '#shared/tax/bareme'
+import { d } from '#shared/tax/decimal'
+import { DERNIERE_ANNEE_CONNUE, reglesPour } from '#shared/tax/rules'
 
 const store = useDossierStore()
 const b = computed(() => store.brouillon.bien)
@@ -10,7 +13,24 @@ const optionsType = [
   { valeur: 'nue' as const, libelle: 'Location nue' },
   { valeur: 'meublee' as const, libelle: 'Meublée (LMNP)' },
 ]
-const optionsTmi = TRANCHES.map((t) => ({ valeur: t as Tranche, libelle: `${t} %` }))
+const optionsSituation = [
+  { valeur: 'seul' as const, libelle: 'Personne seule' },
+  { valeur: 'couple' as const, libelle: 'Couple marié ou pacsé' },
+]
+// Changer de situation garde les parts des enfants : un couple a une part de plus.
+const situation = computed({
+  get: () => f.value.situation,
+  set: (s: Situation) => {
+    const ecart = partsDeBase(s) - partsDeBase(f.value.situation)
+    f.value.situation = s
+    f.value.parts = Math.max(partsDeBase(s), f.value.parts + ecart)
+  },
+})
+// L'impôt du foyer sans le bien, pour situer la tranche pendant la saisie.
+const sansLeBien = computed(() => {
+  const foyer = store.dossier.foyer
+  return impotSurLeRevenu(d(foyer.revenuImposable), foyer, reglesPour(DERNIERE_ANNEE_CONNUE))
+})
 const naturesLibelles: Record<NatureTravaux, string> = {
   entretien: 'Entretien ou réparation',
   amelioration: 'Amélioration',
@@ -44,12 +64,6 @@ const naturesLibelles: Record<NatureTravaux, string> = {
           :min="1990"
           :max="2100"
           aide="Année des premiers loyers, qui est aussi la première année projetée."
-        />
-        <ChoixSegmente
-          v-model="f.tmi"
-          label="Tranche marginale d’imposition"
-          :options="optionsTmi"
-          aide="La tranche la plus haute de votre barème. Le revenu locatif s’y ajoute."
         />
         <ChampNombre
           v-model="b.prixAcquisition"
@@ -253,7 +267,43 @@ const naturesLibelles: Record<NatureTravaux, string> = {
 
     <section class="glass space-y-5 rounded-card p-5 sm:p-6">
       <h2 class="headline text-xl">Le foyer</h2>
+      <p v-if="store.aRevoir" class="rounded-xl bg-warning-tint px-3 py-2 text-sm text-warning">
+        Votre dossier vient d’une version qui ne demandait que la tranche marginale. Le revenu
+        ci-dessous a été estimé à partir d’elle : indiquez votre situation, vos parts et votre
+        revenu imposable.
+      </p>
       <div class="grid gap-4 sm:grid-cols-2">
+        <div class="sm:col-span-2">
+          <ChoixSegmente
+            v-model="situation"
+            label="Situation"
+            :options="optionsSituation"
+            aide="Un couple marié ou pacsé déclare ensemble et compte deux parts, avant les enfants."
+          />
+        </div>
+        <ChampNombre
+          v-model="f.parts"
+          label="Nombre de parts"
+          suffixe="parts"
+          aide="Une part par adulte, une demi-part pour chacun des deux premiers enfants, une part à partir du troisième. Il figure sur votre avis d’impôt."
+        />
+        <ChampNombre
+          v-model="f.revenuImposable"
+          label="Revenu net imposable du foyer, hors ce bien"
+          aide="Sur votre dernier avis d’impôt, moins les revenus de ce bien s’il est déjà loué. Supposé constant sur la période."
+        />
+        <p class="text-sm text-muted sm:col-span-2" aria-live="polite">
+          <template v-if="store.dossier.foyer.revenuImposable > 0">
+            Sans ce bien, au barème des revenus {{ DERNIERE_ANNEE_CONNUE }} : impôt de
+            <span class="numeric font-semibold text-label">{{ euros(sansLeBien.impot) }}</span
+            >, tranche marginale de
+            <span class="numeric font-semibold text-label">{{ sansLeBien.tmi }} %</span>.
+          </template>
+          <template v-else>
+            Renseignez le revenu du foyer : sans lui, le revenu locatif est imposé comme s’il était
+            le seul revenu du foyer.
+          </template>
+        </p>
         <ChampNombre
           v-model="f.autresRecettesMemeCategorie"
           :label="

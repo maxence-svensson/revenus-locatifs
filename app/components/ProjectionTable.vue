@@ -42,8 +42,9 @@ const nomReel = computed(() => (props.projection.typeLocation === 'nue' ? 'Réel
     </table>
     <p class="text-muted mt-2 text-xs">
       Un écart positif signifie que le réel coûte moins cher cette année-là. Les montants
-      comprennent l’impôt à votre tranche, les prélèvements sociaux, l’économie d’un déficit imputé
-      sur le revenu global et celle de la CSG déductible l’année suivante.
+      comprennent l’impôt que le bien ajoute au foyer, au barème, les prélèvements sociaux,
+      l’économie d’un déficit imputé sur le revenu global et celle de la CSG déductible l’année
+      suivante.
     </p>
   </div>
 </template>

@@ -99,16 +99,59 @@ foncier positif.
 
 ## Commun aux deux catégories
 
-- **Impôt sur le revenu** à la tranche marginale saisie, constante sur la projection.
+### Impôt sur le revenu au barème (CGI art. 193 et 197)
+
+L’outil calcule l’impôt du foyer au barème, **avec et sans le bien** : la différence est l’impôt
+que le bien coûte. Le foyer est décrit par sa situation (personne seule, ou couple marié ou pacsé
+soumis à imposition commune), son nombre de parts et son revenu net imposable hors ce bien,
+supposé constant sur la projection.
+
+| Revenu par part (revenus 2025) | Taux |
+| ------------------------------ | ---- |
+| jusqu’à 11 600 €               | 0 %  |
+| de 11 601 € à 29 579 €         | 11 % |
+| de 29 580 € à 84 577 €         | 30 % |
+| de 84 578 € à 181 917 €        | 41 % |
+| au-delà de 181 917 €           | 45 % |
+
+Barème des revenus 2025, loi de finances pour 2026 ([service-public.gouv.fr, F1419][f1419]). Dans
+l’ordre de l’avis d’impôt :
+
+1. **Quotient familial** : le revenu est divisé par le nombre de parts, chaque tranche taxée à son
+   taux, le résultat multiplié par le nombre de parts.
+2. **Plafonnement** : l’avantage des parts au-delà des parts de base (1 pour une personne seule,
+   2 pour un couple) ne peut pas dépasser **1 807 €** par demi-part et **904 €** par quart de
+   part. L’impôt retenu est le plus élevé de l’impôt à toutes les parts et de l’impôt aux parts de
+   base diminué du plafond.
+3. **Décote** : si l’impôt brut est inférieur à 1 982 € (personne seule) ou 3 277 € (couple), il
+   diminue de **897 €** ou **1 483 €** moins **45,25 %** de l’impôt brut, sans devenir négatif. Elle
+   s’applique après le plafonnement ([BOI-IR-LIQ-20-20-30][decote]).
+4. **Recouvrement** : un impôt inférieur à **61 €** n’est pas mis en recouvrement (CGI art. 1657).
+
+L’écart avec et sans le bien se décompose dans l’ordre : le revenu locatif imposable, puis le
+déficit foncier imputé sur le revenu global, puis la CSG déductible de l’année précédente. Chaque
+étape est recalculée au barème, si bien qu’un revenu qui fait changer de tranche ou un déficit qui
+en fait redescendre est imposé exactement.
+
+Non modélisés : la demi-part de parent isolé (case T, plafond de 4 262 € pour le premier enfant)
+et les parts des veufs avec enfants, les réductions et crédits d’impôt, la contribution
+exceptionnelle sur les hauts revenus, et le déficit global reportable six ans quand le déficit
+imputé dépasse le revenu du foyer.
+
+[f1419]: https://www.service-public.gouv.fr/particuliers/vosdroits/F1419
+[decote]: https://bofip.impots.gouv.fr/bofip/2495-PGP.html/identifiant=BOI-IR-LIQ-20-20-30-20260407
+
+### Prélèvements et arrondis
+
 - **Prélèvements sociaux** : 17,2 % du revenu net positif.
 - **CSG déductible** : 6,8 points sur les revenus du patrimoine soumis au barème, déductibles du
   revenu global de l’année suivante (CGI art. 154 quinquies). L’outil compte cette économie
-  l’année d’après, à la tranche indiquée.
+  l’année d’après, au barème.
 - **Arrondis** : bases et impôts arrondis à l’euro le plus proche. Calcul en décimal exact
   (decimal.js), aucun flottant.
 
 ## Ce qui n’est pas modélisé
 
-Voir la page Méthode de l’application : un seul bien, pas de prorata, pas de meublé de tourisme,
+Voir la page Méthode de l’application : un seul bien, revenu du foyer constant, pas de prorata, pas de meublé de tourisme,
 pas de LMP, pas de société à l’IS, pas de dispositif de défiscalisation, pas de plus-value, pas
 d’IFI, règles figées à 2025 pour les années suivantes.

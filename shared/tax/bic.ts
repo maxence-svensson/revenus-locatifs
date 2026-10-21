@@ -1,5 +1,6 @@
 import type { Decimal } from './decimal'
 import { ZERO, somme, max0, min, euros, pourcent } from './decimal'
+import { prelevementsSurBase } from './sociaux'
 import type { AnneeBrute } from './charges'
 import type { ReglesAnnee } from './rules'
 import type { LigneAmortissement } from './amortissements'
@@ -29,9 +30,7 @@ export interface ResultatMicroBic {
   recettes: Decimal
   abattement: Decimal
   baseImposable: Decimal
-  impotRevenu: Decimal
   prelevementsSociaux: Decimal
-  total: Decimal
   csgDeductibleAnneeSuivante: Decimal
   report: ReportBic
 }
@@ -58,29 +57,13 @@ export interface ResultatReelBic {
   deficitExercice: Decimal
   deficitsAnterieursImputes: Decimal
   baseImposable: Decimal
-  impotRevenu: Decimal
   prelevementsSociaux: Decimal
-  total: Decimal
   csgDeductibleAnneeSuivante: Decimal
   report: ReportBic
 }
 
-function impots(base: Decimal, tmi: number, regles: ReglesAnnee) {
-  const baseArrondie = euros(max0(base))
-  const impotRevenu = euros(baseArrondie.times(pourcent(tmi)))
-  const prelevementsSociaux = euros(baseArrondie.times(pourcent(regles.prelevementsSociaux)))
-  const csgDeductibleAnneeSuivante = euros(baseArrondie.times(pourcent(regles.csgDeductible)))
-  return {
-    baseImposable: baseArrondie,
-    impotRevenu,
-    prelevementsSociaux,
-    csgDeductibleAnneeSuivante,
-  }
-}
-
 export function microBic(
   annee: AnneeBrute,
-  tmi: number,
   autresRecettes: Decimal,
   report: ReportBic,
   regles: ReglesAnnee,
@@ -94,7 +77,7 @@ export function microBic(
       ? abattementCalcule
       : regles.bic.microAbattementMinimum,
   )
-  const calc = impots(recettes.minus(abattement), tmi, regles)
+  const calc = prelevementsSurBase(recettes.minus(abattement), regles)
   return {
     regime: 'micro-bic',
     applicable,
@@ -104,7 +87,6 @@ export function microBic(
     recettes,
     abattement,
     ...calc,
-    total: calc.impotRevenu.plus(calc.prelevementsSociaux),
     // Sous le micro, les reports ne se consomment pas ; ils attendent un retour au réel.
     report,
   }
@@ -112,7 +94,6 @@ export function microBic(
 
 export function reelBic(
   annee: AnneeBrute,
-  tmi: number,
   plan: LigneAmortissement[],
   report: ReportBic,
   regles: ReglesAnnee,
@@ -165,7 +146,7 @@ export function reelBic(
   if (deficitExercice.greaterThan(0))
     deficits.push({ annee: annee.annee, montant: deficitExercice })
 
-  const calc = impots(restant, tmi, regles)
+  const calc = prelevementsSurBase(restant, regles)
   return {
     regime: 'reel-bic',
     recettes,
@@ -178,7 +159,6 @@ export function reelBic(
     deficitExercice,
     deficitsAnterieursImputes,
     ...calc,
-    total: calc.impotRevenu.plus(calc.prelevementsSociaux),
     report: { amortissementsEnReport: amortissementReporte, deficits },
   }
 }
