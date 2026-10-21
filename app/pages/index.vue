@@ -21,8 +21,8 @@ async function essayer() {
         style="--delay: 160ms"
       >
         Saisissez votre bien, ses loyers, ses charges et son emprunt. Vous obtenez l’impôt dans
-        chaque régime sur dix ans, le régime qui coûte le moins cher, et les cases à reporter sur la
-        déclaration.
+        chaque régime sur dix ans, le moins cher des quatre, nue ou meublée, et les cases à reporter
+        sur la déclaration.
       </p>
       <div class="enter mt-8 flex flex-wrap gap-3" style="--delay: 240ms">
         <NuxtLink to="/simulateur" class="btn btn-primary">{{
@@ -51,10 +51,10 @@ async function essayer() {
       </div>
       <div class="glass rounded-card p-6">
         <AppIcon nom="balance" class="text-link" />
-        <h2 class="mt-3 font-semibold tracking-tight">Dix ans, pas une année</h2>
+        <h2 class="mt-3 font-semibold tracking-tight">Dix ans, quatre régimes</h2>
         <p class="mt-1 text-sm text-muted">
           Le réel gagne souvent l’année des travaux et perd ensuite. La projection montre quand la
-          balance bascule.
+          balance bascule, et ce que donnerait le même bien dans l’autre type de location.
         </p>
       </div>
     </section>

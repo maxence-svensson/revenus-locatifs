@@ -25,6 +25,8 @@ meublée, année par année sur dix ans, et donne les cases à reporter sur la d
 - **Projection pluriannuelle** : loyers revalorisés, charges indexées, intérêts décroissants d’un
   tableau d’amortissement du prêt, travaux l’année où ils sont payés, déficits et amortissements
   reportés d’une année sur l’autre, CSG déductible comptée l’année suivante.
+- **Nue ou meublée** : les quatre régimes côte à côte sur le même bien, avec un supplément de
+  loyer en meublé réglable, et la bascule du dossier dans l’autre type de location en un clic.
 - **Un verdict chiffré** : l’économie cumulée du régime le moins cher, l’année où le micro
   redevient avantageux, et les engagements que l’option entraîne.
 - **Le détail d’une année** dans chaque régime, ligne par ligne, et **les cases à reporter**

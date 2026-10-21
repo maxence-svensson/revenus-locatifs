@@ -59,6 +59,11 @@ export const bienSchema = z.object({
   vacanceMoisParAn: z.coerce.number().min(0).max(12).default(0),
   revalorisationLoyersPourcent: taux.default(1.5),
   revalorisationChargesPourcent: taux.default(1.5),
+  /**
+   * Écart de loyer entre le meublé et le nu, en pourcentage. Sert à la comparaison
+   * nue / meublée : le loyer saisi est celui du type choisi, l'autre s'en déduit.
+   */
+  supplementLoyerMeublePourcent: taux.default(0),
 
   taxeFonciere: montant.default(0),
   /** Assurances propriétaire non occupant et loyers impayés. */
@@ -122,6 +127,7 @@ export function dossierExemple(anneeCourante: number): Dossier {
       vacanceMoisParAn: 0.5,
       revalorisationLoyersPourcent: 1.5,
       revalorisationChargesPourcent: 1.5,
+      supplementLoyerMeublePourcent: 12,
       taxeFonciere: 900,
       assurances: 320,
       fraisGestionPourcent: 7,

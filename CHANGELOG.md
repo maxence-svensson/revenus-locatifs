@@ -2,6 +2,18 @@
 
 Les changements notables, du plus récent au plus ancien.
 
+## 21 octobre 2026
+
+### Nue ou meublée, les quatre régimes côte à côte
+
+- Le résultat compare le même bien en location nue et en location meublée : micro-foncier, réel
+  foncier, micro-BIC et LMNP au réel, avec le moins cher des quatre et ce que l'autre type de
+  location ferait gagner ou perdre.
+- Un supplément de loyer en meublé, en pourcentage, pour comparer à loyers réalistes ; le
+  dossier se bascule dans l'autre type en un clic.
+- Les champs propres au meublé (terrain, mobilier, expert-comptable, CFE) restent visibles en
+  location nue, puisqu'ils servent à la comparaison.
+
 ## 20 octobre 2026
 
 ### Captures d'écran et en-têtes de sécurité

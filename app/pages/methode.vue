@@ -86,6 +86,23 @@ useSeoMeta({ title: 'Méthode et sources' })
     </section>
 
     <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Nue ou meublée : la comparaison</h2>
+      <p>
+        Le résultat met les quatre régimes côte à côte sur le même bien, le même foyer, les mêmes
+        charges, le même emprunt et les mêmes travaux. Le loyer saisi est celui du type choisi ;
+        celui de l’autre type s’en déduit par le supplément de loyer en meublé que vous indiquez (0
+        % par défaut : même loyer). Le mobilier, l’expert-comptable et la CFE ne comptent qu’en
+        meublé ; les travaux d’amélioration se déduisent en nu et s’amortissent en meublé.
+      </p>
+      <p>
+        La comparaison est fiscale. Elle ne chiffre ni l’ameublement, ni la rotation plus forte des
+        locataires en meublé, ni la plus-value à la revente, où les amortissements déduits se
+        réintègrent. Changer de type de location suppose aussi un nouveau bail et, en meublé, une
+        déclaration d’activité.
+      </p>
+    </section>
+
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
       <h2 class="headline text-2xl">Limites connues</h2>
       <ul class="list-inside list-disc space-y-1">
         <li>
