@@ -4,6 +4,14 @@ Les changements notables, du plus récent au plus ancien.
 
 ## 21 octobre 2026
 
+### Prélèvements sociaux de la location meublée à 18,6 %
+
+- Depuis les revenus 2025, la CSG sur les revenus du patrimoine passe de 9,2 % à 10,6 % (LFSS
+  2026, art. 12). Les revenus fonciers y échappent et restent à 17,2 % de prélèvements sociaux ;
+  la location meublée non professionnelle passe à 18,6 %. Le simulateur appliquait 17,2 %
+  partout, ce qui sous-estimait l'impôt en meublé et le favorisait dans la comparaison.
+- La CSG déductible reste de 6,8 points dans les deux cas.
+
 ### L'impôt au barème, à la place de la tranche marginale
 
 - Le foyer se décrit par sa situation (personne seule ou couple), son nombre de parts et son

@@ -143,12 +143,27 @@ imputé dépasse le revenu du foyer.
 
 ### Prélèvements et arrondis
 
-- **Prélèvements sociaux** : 17,2 % du revenu net positif.
-- **CSG déductible** : 6,8 points sur les revenus du patrimoine soumis au barème, déductibles du
+- **Prélèvements sociaux**, sur le revenu net positif :
+
+  | Revenus 2025                | CSG    | CRDS  | Solidarité | Total      |
+  | --------------------------- | ------ | ----- | ---------- | ---------- |
+  | Location nue (foncier)      | 9,2 %  | 0,5 % | 7,5 %      | **17,2 %** |
+  | Location meublée (BIC LMNP) | 10,6 % | 0,5 % | 7,5 %      | **18,6 %** |
+
+  La LFSS 2026 (loi 2025-1403 du 30 décembre 2025, art. 12) porte la CSG sur les revenus du
+  patrimoine de 9,2 % à 10,6 % à compter des revenus 2025. Les revenus fonciers restent à 9,2 %
+  ; les BIC de la location meublée non professionnelle, revenus du patrimoine au sens de
+  l’article L136-6 du code de la sécurité sociale, passent à 10,6 % ([brochure IR 2026,
+  principales nouveautés][nouveautes] ; [service-public.gouv.fr, F2329][f2329]).
+
+- **CSG déductible** : 6,8 points dans les deux cas, inchangés par la hausse, déductibles du
   revenu global de l’année suivante (CGI art. 154 quinquies). L’outil compte cette économie
   l’année d’après, au barème.
 - **Arrondis** : bases et impôts arrondis à l’euro le plus proche. Calcul en décimal exact
   (decimal.js), aucun flottant.
+
+[nouveautes]: https://www.impots.gouv.fr/www2/fichiers/documentation/brochure/ir_2026/pdf_som/nouveautes.pdf
+[f2329]: https://www.service-public.gouv.fr/particuliers/vosdroits/F2329
 
 ## Ce qui n’est pas modélisé
 

@@ -95,7 +95,7 @@ export function microFoncier(
   const revenuNet = recettes.minus(abattement)
   const imputation = imputerDeficitsAnterieurs(revenuNet, report, annee.annee, regles)
   const base = revenuNet.minus(imputation.impute)
-  const calc = prelevementsSurBase(base, regles)
+  const calc = prelevementsSurBase(base, 'foncier', regles)
   return {
     regime: 'micro-foncier',
     applicable,
@@ -183,7 +183,7 @@ export function reelFoncier(
     nouveauReport = imputation.report
   }
 
-  const calc = prelevementsSurBase(base, regles)
+  const calc = prelevementsSurBase(base, 'foncier', regles)
   return {
     regime: 'reel-foncier',
     recettes,

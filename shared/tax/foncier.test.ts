@@ -34,6 +34,7 @@ describe('micro-foncier', () => {
     expect(r.applicable).toBe(true)
     expect(r.abattement.toFixed(0)).toBe('3600')
     expect(r.baseImposable.toFixed(0)).toBe('8400')
+    // Les revenus fonciers échappent à la hausse de la CSG : 17,2 %.
     expect(r.prelevementsSociaux.toFixed(0)).toBe('1445')
     expect(r.csgDeductibleAnneeSuivante.toFixed(0)).toBe('571')
   })

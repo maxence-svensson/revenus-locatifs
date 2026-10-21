@@ -77,7 +77,7 @@ export function microBic(
       ? abattementCalcule
       : regles.bic.microAbattementMinimum,
   )
-  const calc = prelevementsSurBase(recettes.minus(abattement), regles)
+  const calc = prelevementsSurBase(recettes.minus(abattement), 'bic', regles)
   return {
     regime: 'micro-bic',
     applicable,
@@ -146,7 +146,7 @@ export function reelBic(
   if (deficitExercice.greaterThan(0))
     deficits.push({ annee: annee.annee, montant: deficitExercice })
 
-  const calc = prelevementsSurBase(restant, regles)
+  const calc = prelevementsSurBase(restant, 'bic', regles)
   return {
     regime: 'reel-bic',
     recettes,

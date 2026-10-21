@@ -47,7 +47,9 @@ describe('micro-BIC', () => {
     const r = microBic(annee({ loyers: d(10000) }), ZERO, REPORT_BIC_VIDE, regles)
     expect(r.abattement.toFixed(0)).toBe('5000')
     expect(r.baseImposable.toFixed(0)).toBe('5000')
-    expect(r.prelevementsSociaux.toFixed(0)).toBe('860')
+    // 18,6 % depuis les revenus 2025 (LFSS 2026, art. 12).
+    expect(r.prelevementsSociaux.toFixed(0)).toBe('930')
+    expect(r.csgDeductibleAnneeSuivante.toFixed(0)).toBe('340')
   })
   it('garantit l’abattement minimum de 305 €', () => {
     const r = microBic(annee({ loyers: d(500) }), ZERO, REPORT_BIC_VIDE, regles)
@@ -77,7 +79,7 @@ describe('réel BIC', () => {
     expect(r.amortissementDeduit.toFixed(0)).toBe('4000')
     expect(r.amortissementReporte.isZero()).toBe(true)
     expect(r.baseImposable.toFixed(0)).toBe('4000')
-    expect(r.prelevementsSociaux.toFixed(0)).toBe('688')
+    expect(r.prelevementsSociaux.toFixed(0)).toBe('744')
   })
 
   it('plafonne l’amortissement au résultat avant amortissement (art. 39 C)', () => {
