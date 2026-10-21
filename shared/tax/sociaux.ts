@@ -8,11 +8,19 @@ import type { ReglesAnnee } from './rules'
  * suivante. L'impôt sur le revenu, lui, se calcule au barème sur l'ensemble du foyer
  * (shared/tax/bareme.ts), dans la projection.
  */
-export function prelevementsSurBase(base: Decimal, regles: ReglesAnnee) {
+export type CategorieRevenu = keyof ReglesAnnee['prelevementsSociaux']
+
+export function prelevementsSurBase(
+  base: Decimal,
+  categorie: CategorieRevenu,
+  regles: ReglesAnnee,
+) {
   const baseImposable = euros(max0(base))
   return {
     baseImposable,
-    prelevementsSociaux: euros(baseImposable.times(pourcent(regles.prelevementsSociaux))),
+    prelevementsSociaux: euros(
+      baseImposable.times(pourcent(regles.prelevementsSociaux[categorie])),
+    ),
     csgDeductibleAnneeSuivante: euros(baseImposable.times(pourcent(regles.csgDeductible))),
   }
 }

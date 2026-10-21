@@ -4,7 +4,13 @@ import type { Decimal } from '#shared/tax/decimal'
 
 const props = defineProps<{ ligne: LigneProjection }>()
 const libellePs = computed(
-  () => `Prélèvements sociaux ${pourcent(props.ligne.regles.prelevementsSociaux, 1)}`,
+  () =>
+    `Prélèvements sociaux ${pourcent(
+      props.ligne.regles.prelevementsSociaux[
+        props.ligne.micro.resultat.regime === 'micro-foncier' ? 'foncier' : 'bic'
+      ],
+      1,
+    )}`,
 )
 const libelleImpot = (tmi: number) => `Impôt sur le revenu, au barème (tranche ${tmi} %)`
 

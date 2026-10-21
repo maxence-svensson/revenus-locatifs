@@ -40,8 +40,12 @@ export interface ReglesAnnee {
     /** En dessous de ce montant, l'impôt n'est pas mis en recouvrement (CGI art. 1657). */
     seuilRecouvrement: Decimal
   }
-  /** Prélèvements sociaux sur les revenus du patrimoine. */
-  prelevementsSociaux: Decimal
+  /**
+   * Prélèvements sociaux (CSG, CRDS, prélèvement de solidarité), en pourcentage. Les revenus
+   * fonciers de la location nue et les BIC de la location meublée non professionnelle n'ont pas
+   * le même taux depuis les revenus 2025.
+   */
+  prelevementsSociaux: { foncier: Decimal; bic: Decimal }
   /** Part de la CSG déductible du revenu global de l'année suivante. */
   csgDeductible: Decimal
   foncier: {
@@ -88,7 +92,10 @@ const REGLES_2025: ReglesAnnee = {
     decoteTaux: d('45.25'),
     seuilRecouvrement: d(61),
   },
-  prelevementsSociaux: d('17.2'),
+  // LFSS 2026, art. 12 : CSG portée de 9,2 % à 10,6 % sur les revenus du patrimoine à compter
+  // des revenus 2025, sauf les revenus fonciers, qui restent à 9,2 %. CRDS 0,5 % et prélèvement
+  // de solidarité 7,5 % inchangés.
+  prelevementsSociaux: { foncier: d('17.2'), bic: d('18.6') },
   csgDeductible: d('6.8'),
   foncier: {
     microPlafond: d(15000),

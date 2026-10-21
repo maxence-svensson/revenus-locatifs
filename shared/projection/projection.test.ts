@@ -132,6 +132,19 @@ describe('projection', () => {
     expect(p.avertissements.some((a) => a.includes('six ans'))).toBe(true)
   })
 
+  it('applique 17,2 % de prélèvements sociaux en nu et 18,6 % en meublé', () => {
+    // 8 280 € de loyers : 5 796 € de base au micro-foncier, 4 140 € au micro-BIC.
+    const base = dossierExemple(2025)
+    const nue = projeter(base).annees[0]!.micro
+    const meublee = projeter(
+      dossierSchema.parse({ ...base, bien: { ...base.bien, typeLocation: 'meublee' } }),
+    ).annees[0]!.micro
+    expect(nue.resultat.baseImposable.toFixed(0)).toBe('5796')
+    expect(nue.prelevementsSociaux.toFixed(0)).toBe('997')
+    expect(meublee.resultat.baseImposable.toFixed(0)).toBe('4140')
+    expect(meublee.prelevementsSociaux.toFixed(0)).toBe('770')
+  })
+
   it('produit les cases à reporter des deux régimes', () => {
     const p = projeter(dossierExemple(2025))
     const micro = casesPour(p.annees[0]!, 'micro')

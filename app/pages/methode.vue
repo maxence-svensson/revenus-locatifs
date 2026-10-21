@@ -79,10 +79,14 @@ useSeoMeta({ title: 'Méthode et sources' })
         <span class="text-muted">CGI art. 193, 197 et 1657 ; BOI-IR-LIQ-20-20-30.</span>
       </p>
       <p>
-        <strong>Prélèvements sociaux.</strong> 17,2 % sur le revenu net positif. 6,8 points de CSG
-        sont déductibles du revenu global de l’année suivante : l’outil compte cette économie
-        l’année d’après, au barème.
-        <span class="text-muted">CGI art. 154 quinquies.</span>
+        <strong>Prélèvements sociaux.</strong> Sur le revenu net positif : 17,2 % pour les revenus
+        fonciers de la location nue, 18,6 % pour la location meublée non professionnelle, dont la
+        CSG passe de 9,2 % à 10,6 % à compter des revenus 2025. 6,8 points de CSG restent
+        déductibles du revenu global de l’année suivante : l’outil compte cette économie l’année
+        d’après, au barème.
+        <span class="text-muted"
+          >LFSS 2026, art. 12 ; CSS art. L136-6 et L136-8 ; CGI art. 154 quinquies.</span
+        >
       </p>
       <p>
         <strong>Arrondis.</strong> Les bases sont arrondies à l’euro, comme sur les formulaires.
