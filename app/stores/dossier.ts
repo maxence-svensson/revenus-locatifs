@@ -7,6 +7,12 @@ import {
   type Travaux,
 } from '#shared/model/dossier'
 import { projeter, type Projection } from '#shared/projection/projection'
+import {
+  autreType,
+  comparer,
+  dossierPourType,
+  type Comparaison,
+} from '#shared/projection/comparaison'
 import { effacerDossier, enregistrerDossier, lireDossier } from '~/utils/storage'
 
 /** Le brouillon accepte des champs vides pendant la saisie ; le dossier validé n'en a pas. */
@@ -30,6 +36,8 @@ export const useDossierStore = defineStore('dossier', () => {
   )
 
   const projection = computed<Projection>(() => projeter(dossier.value))
+  /** Le même dossier dans les deux types de location : les quatre régimes. */
+  const comparaison = computed<Comparaison>(() => comparer(dossier.value))
 
   /** Le dossier contient-il de quoi calculer quelque chose ? */
   const renseigne = computed(() => dossier.value.bien.loyerMensuelHorsCharges > 0)
@@ -70,6 +78,13 @@ export const useDossierStore = defineStore('dossier', () => {
     brouillon.value.bien.travaux.push(t)
   }
 
+  /** Passe le dossier dans l'autre type de location, le loyer ajusté du supplément du meublé. */
+  function basculerType() {
+    const cible = dossierPourType(dossier.value, autreType(dossier.value.bien.typeLocation))
+    brouillon.value.bien.typeLocation = cible.bien.typeLocation
+    brouillon.value.bien.loyerMensuelHorsCharges = cible.bien.loyerMensuelHorsCharges
+  }
+
   function supprimerTravaux(id: string) {
     brouillon.value.bien.travaux = brouillon.value.bien.travaux.filter((t) => t.id !== id)
   }
@@ -96,6 +111,7 @@ export const useDossierStore = defineStore('dossier', () => {
     dossier,
     erreurs,
     projection,
+    comparaison,
     demo,
     touche,
     renseigne,
@@ -104,5 +120,6 @@ export const useDossierStore = defineStore('dossier', () => {
     reinitialiser,
     ajouterTravaux,
     supprimerTravaux,
+    basculerType,
   }
 })

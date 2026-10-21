@@ -88,6 +88,8 @@ const hypotheses = computed(() => {
       </section>
     </div>
 
+    <ComparaisonTypes id="comparaison" :comparaison="store.comparaison" class="scroll-mt-28" />
+
     <section id="detail-annee" class="scroll-mt-28">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h2 class="headline text-2xl">Le détail d’une année</h2>

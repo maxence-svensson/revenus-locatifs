@@ -61,19 +61,17 @@ const naturesLibelles: Record<NatureTravaux, string> = {
           label="Frais d’acquisition"
           aide="Notaire et agence à l’achat. En meublé au réel, amortis avec le bien."
         />
-        <template v-if="meuble">
-          <ChampNombre
-            v-model="b.partTerrainPourcent"
-            label="Part du terrain"
-            suffixe="%"
-            aide="Le terrain ne s’amortit pas. 10 à 20 % en ville, davantage pour une maison."
-          />
-          <ChampNombre
-            v-model="b.mobilier"
-            label="Valeur du mobilier"
-            aide="Meubles et équipements fournis, amortis sur 7 ans."
-          />
-        </template>
+        <ChampNombre
+          v-model="b.partTerrainPourcent"
+          label="Part du terrain"
+          suffixe="%"
+          aide="En meublé, le terrain ne s’amortit pas. 10 à 20 % en ville, davantage pour une maison."
+        />
+        <ChampNombre
+          v-model="b.mobilier"
+          label="Valeur du mobilier"
+          aide="Meubles et équipements fournis, amortis sur 7 ans en meublé. Compte dans la comparaison nue / meublée."
+        />
       </div>
     </section>
 
@@ -103,6 +101,16 @@ const naturesLibelles: Record<NatureTravaux, string> = {
           label="Hausse des charges"
           suffixe="% / an"
         />
+        <ChampNombre
+          v-model="b.supplementLoyerMeublePourcent"
+          label="Supplément de loyer en meublé"
+          suffixe="%"
+          :aide="
+            meuble
+              ? 'Le loyer saisi est celui du meublé. La comparaison nue / meublée le réduit d’autant pour la location nue. Un meublé se loue souvent 10 à 20 % plus cher.'
+              : 'Le loyer saisi est celui du nu. La comparaison nue / meublée l’augmente d’autant pour le meublé, qui se loue souvent 10 à 20 % plus cher.'
+          "
+        />
       </div>
     </section>
 
@@ -130,18 +138,16 @@ const naturesLibelles: Record<NatureTravaux, string> = {
           label="Charges de copropriété non récupérables"
           aide="La part qui reste au propriétaire : travaux votés, honoraires du syndic, assurance de l’immeuble."
         />
-        <template v-if="meuble">
-          <ChampNombre
-            v-model="b.fraisComptable"
-            label="Expert-comptable"
-            aide="Au réel, la liasse 2031 se fait rarement sans. Comptez 300 à 700 € par an."
-          />
-          <ChampNombre
-            v-model="b.cfe"
-            label="Cotisation foncière des entreprises"
-            aide="Due en meublé, sauf recettes inférieures à 5 000 €. Votre commune fixe le montant."
-          />
-        </template>
+        <ChampNombre
+          v-model="b.fraisComptable"
+          label="Expert-comptable"
+          aide="En meublé au réel, la liasse 2031 se fait rarement sans. Comptez 300 à 700 € par an. Sans effet en location nue."
+        />
+        <ChampNombre
+          v-model="b.cfe"
+          label="Cotisation foncière des entreprises"
+          aide="Due en meublé, sauf recettes inférieures à 5 000 €. Votre commune fixe le montant. Sans effet en location nue."
+        />
       </div>
     </section>
 
