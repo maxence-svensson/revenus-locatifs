@@ -34,6 +34,9 @@ meublée, année par année sur dix ans, et donne les cases à reporter sur la d
   redevient avantageux, et les engagements que l’option entraîne.
 - **Le détail d’une année** dans chaque régime, ligne par ligne, et **les cases à reporter**
   (2042 4BE, 4BA, 4BC, 4BB ; 2044 ; 2042 C PRO 5ND, 5NA, 5NY ; 2031 et 2033-B).
+- **Le loyer de marché d’après la commune** : la carte des loyers 2025 de l’ANIL, pour toutes les
+  communes, ramenée à la surface du bien, avec sa fourchette, sa fiabilité et un signal quand la
+  commune est soumise à l’encadrement des loyers. La recherche se fait dans le navigateur.
 - **Un mode démonstration** avec un exemple fictif clairement signalé.
 - **Vos données restent dans votre navigateur** : pas de compte, pas de serveur, une sauvegarde
   locale que vous pouvez effacer.
@@ -92,6 +95,7 @@ npm run dev
 | `npm run format`    | mise en forme (Prettier)                                                           |
 | `npm run build`     | build de production                                                                |
 | `npm run captures`  | captures d’écran du README (Chrome ou Edge installé, build lancé sur le port 3002) |
+| `npm run loyers`    | régénère les données de la carte des loyers (`public/donnees`)                     |
 
 ## Organisation du code
 
@@ -101,7 +105,14 @@ npm run dev
 - `shared/tax/amortissements.ts`, `shared/loan` : plan d’amortissement du meublé et tableau du prêt.
 - `shared/projection` : les années brutes puis la comparaison sur l’horizon choisi.
 - `shared/tax/cases.ts` : les cases à reporter.
+- `shared/loyers` : recherche de commune, estimation du loyer et communes encadrées ; les données
+  sont générées par `scripts/loyers.mjs`, méthode dans [`docs/donnees-loyers.md`](docs/donnees-loyers.md).
 - `app/` : l’interface Nuxt, sans logique fiscale.
+
+## Données
+
+Les loyers de marché viennent de la [« Carte des loyers » 2025](https://www.data.gouv.fr/datasets/carte-des-loyers-indicateurs-de-loyers-dannonce-par-commune-en-2025),
+sous Licence Ouverte 2.0 : Estimations ANIL, à partir des données du Groupe SeLoger et de leboncoin.
 
 ## Du même auteur
 

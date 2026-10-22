@@ -112,6 +112,34 @@ useSeoMeta({ title: 'Méthode et sources' })
     </section>
 
     <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
+      <h2 class="headline text-2xl">Estimer le loyer d’après la commune</h2>
+      <p>
+        Le simulateur reprend la
+        <a
+          class="text-link underline-offset-2 hover:underline"
+          href="https://www.data.gouv.fr/datasets/carte-des-loyers-indicateurs-de-loyers-dannonce-par-commune-en-2025"
+          >carte des loyers 2025</a
+        >
+        : un loyer d’annonce au m², charges comprises, pour un logement vide, dans chacune des 34
+        900 communes, calculé par l’ANIL à partir de 9,1 millions d’annonces. Il le multiplie par la
+        surface, retire les charges refacturées au locataire et, en meublé, ajoute le supplément de
+        loyer que vous indiquez. Il signale les estimations fragiles : peu d’annonces, ou loyer
+        emprunté à des communes voisines.
+      </p>
+      <p>
+        Ce sont des loyers d’annonce, pas des loyers signés ; l’état du logement, l’étage ou le DPE
+        n’y entrent pas. Dans les communes soumises à l’encadrement des loyers (Paris, Lille, Lyon
+        et Villeurbanne, Montpellier, Bordeaux, Plaine Commune, Est Ensemble, le Pays basque et une
+        partie de la métropole de Grenoble), le loyer de référence majoré fixé par le préfet prime :
+        le site le signale et renvoie vers le simulateur officiel.
+        <span class="text-muted"
+          >Estimations ANIL, à partir des données du Groupe SeLoger et de leboncoin ; loi ELAN, art.
+          140.</span
+        >
+      </p>
+    </section>
+
+    <section class="solid-card space-y-3 rounded-card p-6 sm:p-8">
       <h2 class="headline text-2xl">Limites connues</h2>
       <ul class="list-inside list-disc space-y-1">
         <li>

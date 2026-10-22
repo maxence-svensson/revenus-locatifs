@@ -19,7 +19,8 @@
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
-    "captures": "node scripts/captures.mjs"
+    "captures": "node scripts/captures.mjs",
+    "loyers": "node scripts/loyers.mjs"
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.2",
