@@ -2,6 +2,22 @@
 
 Les changements notables, du plus récent au plus ancien.
 
+## 22 octobre 2026
+
+### Estimer le loyer d'après la commune
+
+- Le simulateur estime un loyer de marché à partir de la carte des loyers 2025 de l'ANIL : commune
+  (ou arrondissement), type de bien, pièces et surface. Il affiche le loyer charges comprises, sa
+  fourchette, le loyer hors charges une fois les charges refacturées retirées et, en meublé, avec
+  le supplément de loyer ; un bouton le reprend dans le dossier.
+- Les estimations fragiles sont signalées : peu d'annonces dans la commune, ou loyer emprunté à
+  des communes voisines.
+- Dans les communes soumises à l'encadrement des loyers, un avertissement rappelle que le loyer de
+  référence majoré prime et renvoie vers la fiche service-public du territoire, avec l'échéance
+  de l'expérimentation au 24 novembre 2026.
+- Les données sont générées par `scripts/loyers.mjs` et servies par le site lui-même : la
+  recherche de commune ne part vers aucun service tiers.
+
 ## 21 octobre 2026
 
 ### Prélèvements sociaux de la location meublée à 18,6 %

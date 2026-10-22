@@ -19,6 +19,30 @@ const montant = z.coerce.number().min(0).finite()
 const taux = z.coerce.number().min(0).max(100).finite()
 const annee = z.coerce.number().int().min(1990).max(2100)
 
+export const TYPES_BIEN = ['appartement', 'maison'] as const
+
+/**
+ * Où se trouve le bien et ce qu'il est : de quoi estimer un loyer de marché avec la carte des
+ * loyers (shared/loyers). Facultatif ; sans effet sur le calcul fiscal.
+ */
+export const localisationSchema = z.object({
+  /** Code INSEE de la commune, ou de l'arrondissement à Paris, Lyon et Marseille. */
+  codeInsee: z
+    .string()
+    .regex(/^(\d{5}|2[AB]\d{3})$/)
+    .or(z.literal(''))
+    .default(''),
+  nomCommune: z.string().max(80).default(''),
+  typeBien: z.enum(TYPES_BIEN).default('appartement'),
+  /** Pièces principales, hors cuisine et salle de bain. */
+  pieces: z.coerce.number().int().min(0).max(20).default(2),
+  /** Surface habitable, en m². */
+  surface: z.coerce.number().min(0).max(1000).finite().default(0),
+  /** Charges refacturées au locataire, par mois. */
+  chargesRecuperables: montant.default(0),
+})
+export type Localisation = z.infer<typeof localisationSchema>
+
 export const travauxSchema = z.object({
   id: z.string(),
   annee,
@@ -79,6 +103,7 @@ export const bienSchema = z.object({
 
   travaux: z.array(travauxSchema).default([]),
   emprunt: empruntSchema,
+  localisation: localisationSchema.default(() => localisationSchema.parse({})),
 })
 export type Bien = z.infer<typeof bienSchema>
 
@@ -149,6 +174,14 @@ export function dossierExemple(anneeCourante: number): Dossier {
           libelle: 'Cuisine et salle de bain',
         },
       ],
+      localisation: {
+        codeInsee: '44109',
+        nomCommune: 'Nantes',
+        typeBien: 'appartement',
+        pieces: 2,
+        surface: 45,
+        chargesRecuperables: 40,
+      },
       emprunt: {
         actif: true,
         capital: 150000,

@@ -91,6 +91,7 @@ const naturesLibelles: Record<NatureTravaux, string> = {
 
     <section class="glass space-y-5 rounded-card p-5 sm:p-6">
       <h2 class="headline text-xl">Loyers</h2>
+      <EstimationLoyer />
       <div class="grid gap-4 sm:grid-cols-2">
         <ChampNombre
           v-model="b.loyerMensuelHorsCharges"

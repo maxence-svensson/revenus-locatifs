@@ -9,6 +9,11 @@
   dossier validé est réécrit à chaque modification pour être retrouvé à la visite suivante, sur
   l'appareil seulement. « Tout effacer » et « Quitter la démonstration » le suppriment.
 - **Préférences** (`localStorage`, clé `revenus-locatifs:theme`) : le thème choisi. Rien d'autre.
+- **Estimation du loyer** : la liste des communes et les loyers d'un département sont des fichiers
+  statiques servis par le site lui-même (`/donnees/loyers-2025/`). La recherche de commune se fait
+  dans le navigateur ; seul le nom du fichier du département choisi apparaît dans la requête, sur
+  le même domaine. Aucun service tiers n'est appelé. La commune, la surface et les charges
+  rejoignent le dossier enregistré dans le navigateur.
 - Le stockage peut être indisponible (navigation privée, quota) : l'application fonctionne alors
   sans mémoire, sans erreur visible.
 
